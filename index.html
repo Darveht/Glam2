@@ -1,0 +1,3007 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>VetPlex Platform Streaming</title>
+  <meta name="google-adsense-account" content="ca-pub-1068188776188742">
+
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-1068188776188742">  <!-- Metaetiqueta de AdSense -->
+
+  <title>Glam</title>
+  <style>
+    /* Estilos generales */
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #F3F4F6;
+      /* Fondo gris claro estilo Amazon */
+      color: #333;
+      position: relative;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      background-color: rgba(0, 0, 0, 0.6);
+      /* Sombra para el fondo */
+    }
+
+    #auth-container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      /* Sombra más suave estilo Amazon */
+      width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #FF9900;
+      /* Color de texto estilo Amazon */
+      margin-bottom: 10px;
+      font-size: 26px;
+    }
+
+    h2 {
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    input,
+    button {
+      width: 100%;
+      margin: 15px 0;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 16px;
+      border: 1px solid #D5D9D9;
+    }
+
+    input {
+      background-color: #FFFFFF;
+      color: #333;
+    }
+
+    button {
+      background-color: #FF9900;
+      color: #FFFFFF;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #F08804;
+      /* Color naranja más oscuro al hacer hover */
+    }
+
+    .forgot-password,
+    .toggle-auth {
+      display: block;
+      margin-top: 10px;
+      color: #0066C0;
+      /* Color de enlace azul estilo Amazon */
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .forgot-password:hover,
+    .toggle-auth:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+  <script type="module">
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyBGymYEny8_sW8LremajNvVrDzF2OvRqtk",
+      authDomain: "vetplex-animes.firebaseapp.com",
+      projectId: "vetplex-animes",
+      storageBucket: "vetplex-animes.appspot.com",
+      messagingSenderId: "485618641909",
+      appId: "1:485618641909:web:8030f45a4ad757a4878ebc",
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    document.addEventListener('DOMContentLoaded', () => {
+      const overlay = document.getElementById('overlay');
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const toggleAuthLink = document.getElementById('toggle-auth');
+      onAuthStateChanged(auth, user => {
+        overlay.style.display = user ? 'none' : 'flex';
+      });
+      // Alternar entre el formulario de inicio de sesión y el de registro
+      toggleAuthLink.addEventListener('click', () => {
+        if (loginForm.style.display === 'none') {
+          loginForm.style.display = 'block';
+          registerForm.style.display = 'none';
+          toggleAuthLink.textContent = "¿No tienes cuenta? Regístrate";
+        } else {
+          loginForm.style.display = 'none';
+          registerForm.style.display = 'block';
+          toggleAuthLink.textContent = "¿Ya tienes cuenta? Inicia Sesión";
+        }
+      });
+      document.getElementById("register-button").addEventListener("click", () => {
+        const email = document.getElementById("register-email").value;
+        const password = document.getElementById("register-password").value;
+        createUserWithEmailAndPassword(auth, email, password)
+          .then(() => overlay.style.display = 'none')
+          .catch(error => alert("Error en el registro: " + error.message));
+      });
+      document.getElementById("login-button").addEventListener("click", () => {
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+        signInWithEmailAndPassword(auth, email, password)
+          .then(() => overlay.style.display = 'none')
+          .catch(error => alert("Error en el inicio de sesión: " + error.message));
+      });
+      document.getElementById("forgot-password").addEventListener("click", () => {
+        const email = document.getElementById("login-email").value;
+        if (email) {
+          sendPasswordResetEmail(auth, email)
+            .then(() => alert("Se ha enviado un correo para restablecer la contraseña."))
+            .catch(error => alert("Error: " + error.message));
+        } else {
+          alert("Por favor, ingresa tu correo electrónico.");
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div id="overlay">
+    <div id="auth-container">
+      <h1>Glam</h1>
+      <h2>¡Regístrate o Inicia Sesión!</h2>
+
+      <!-- Formulario de inicio de sesión -->
+      <div id="login-form">
+        <input type="email" id="login-email" placeholder="Correo Electrónico">
+        <input type="password" id="login-password" placeholder="Contraseña">
+        <button id="login-button">Iniciar Sesión</button>
+        <span class="forgot-password" id="forgot-password">Olvidé mi Contraseña</span>
+      </div>
+
+      <!-- Formulario de registro -->
+      <div id="register-form" style="display:none;">
+        <input type="email" id="register-email" placeholder="Correo Electrónico">
+        <input type="password" id="register-password" placeholder="Contraseña">
+        <button id="register-button">Regístrate</button>
+      </div>
+
+      <!-- Enlace para alternar entre formularios -->
+      <span class="toggle-auth" id="toggle-auth">¿No tienes cuenta? Regístrate</span>
+    </div>
+  </div>
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Glam Platform Streaming</title>
+
+</head>
+
+<body>
+  <!-- partial:index.partial.html -->
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetPlex - Notificaciones y Configuraciones</title>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #1c1c1c;
+        /* Fondo oscuro */
+        color: #ffffff;
+        /* Color de texto blanco */
+        margin: 0;
+        padding: 0;
+        line-height: 1.5;
+      }
+
+      #notification-blocker {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.85);
+        /* Fondo semi-transparente */
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .notification-content {
+        background-color: #252525;
+        /* Fondo del contenido */
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 450px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+        text-align: center;
+        position: relative;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      h1 {
+        font-size: 1.8em;
+        color: #f5c518;
+        /* Color amarillo para el título */
+        margin-bottom: 15px;
+      }
+
+      h2 {
+        font-size: 1.4em;
+        margin: 15px 0;
+        color: #e50914;
+        /* Color rojo para subtítulos */
+      }
+
+      p {
+        font-size: 1em;
+        color: #cccccc;
+        /* Color gris claro para el texto */
+        margin-bottom: 15px;
+      }
+
+      .version {
+        font-size: 1.2em;
+        color: #f5c518;
+        /* Color amarillo para la versión */
+      }
+
+      .btn {
+        background-color: #f5c518;
+        /* Botón amarillo */
+        color: #000000;
+        /* Texto negro en el botón */
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px 0;
+        transition: background-color 0.3s;
+        width: 100%;
+        font-size: 1em;
+      }
+
+      .btn:hover {
+        background-color: #e0a812;
+        /* Color más oscuro al pasar el mouse */
+      }
+
+      #shortcut {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: url('https://cdn-icons-png.flaticon.com/512/3097/3097687.png') no-repeat center center;
+        background-size: contain;
+        cursor: pointer;
+        z-index: 1001;
+      }
+
+      #settings {
+        margin-top: 20px;
+      }
+
+      .privacy-option {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px 0;
+      }
+
+      .privacy-option label {
+        font-size: 1em;
+      }
+
+      #report-form {
+        margin-top: 20px;
+        display: none;
+        /* Se oculta hasta que el usuario lo abra */
+      }
+
+      #warning-message {
+        color: #ffcc00;
+        margin-top: 10px;
+        display: none;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Atajo para abrir la notificación -->
+    <div id="shortcut" title="Verificar anime preferido"></div>
+
+    <!-- Pantalla de bloqueo con notificación -->
+    <div id="notification-blocker">
+      <div class="notification-content">
+        <h1>¡Atención, usuarios de Glam!</h1>
+        <p id="notification-message">
+          Nos complace anunciar que la versión <span class="version">2.0</span> ha coordinado nuevas funciones en la publicación de animes privados. ¡Estén atentos para más actualizaciones!
+        </p>
+
+        <!-- Formulario de reporte -->
+        <div id="report-form">
+          <h2>Reportar Problema</h2>
+          <p>Selecciona el problema que estás experimentando:</p>
+          <select id="problem-type">
+            <option value="video-calidad">Problema con la calidad del video</option>
+            <option value="audio-sincronizacion">Problema de sincronización de audio</option>
+            <option value="error-carga">Error al cargar el capítulo</option>
+            <option value="otro">Otro problema</option>
+          </select>
+
+          <button class="btn" id="submit-report">Enviar Reporte</button>
+          <p id="warning-message">No todos los reportes son procesados de inmediato. Haremos lo posible por revisarlo lo más pronto posible.</p>
+        </div>
+
+        <!-- Botón para aceptar y cerrar la notificación -->
+        <button class="btn" id="accept-btn">Aceptar</button>
+
+        <!-- Botón para reportar problemas -->
+        <button class="btn" id="report-btn">Reportar Problema</button>
+      </div>
+    </div>
+
+    <script>
+      // Mostrar y ocultar la pantalla de bloqueo de notificación
+      document.getElementById('shortcut').onclick = function() {
+        document.getElementById('notification-blocker').style.display = 'flex';
+      }
+      document.getElementById('accept-btn').onclick = function() {
+        document.getElementById('notification-blocker').style.display = 'none';
+      }
+      // Mostrar formulario de reporte al hacer clic en "Reportar Problema"
+      document.getElementById('report-btn').onclick = function() {
+        document.getElementById('report-form').style.display = 'block';
+      }
+      // Enviar el reporte y mostrar advertencia
+      document.getElementById('submit-report').onclick = function() {
+        document.getElementById('warning-message').style.display = 'block';
+      }
+    </script>
+  </body>
+
+  </html>
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glam</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      body {
+        background-color: #232F3E;
+        /* Color de fondo oscuro similar al de Amazon */
+        color: #FFFFFF;
+        /* Texto blanco para buen contraste */
+        font-family: 'Arial', sans-serif;
+        overflow-x: hidden;
+        margin: 0;
+        transition: background-color 0.3s, color 0.3s;
+        /* Transición suave al cambiar modos */
+      }
+
+      body.light-mode {
+        background-color: #FFFFFF;
+        /* Fondo blanco para modo claro */
+        color: #232F3E;
+        /* Texto en gris oscuro, similar al estilo de Amazon en modo claro */
+      }
+
+      /* Opcional: estilos para enlaces y botones en cada modo */
+      a {
+        color: #FF9900;
+        /* Color de enlace estilo Amazon */
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Estilo para botones en modo oscuro y claro */
+      button {
+        background-color: #FF9900;
+        /* Naranja de Amazon para los botones */
+        color: #FFFFFF;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #e68a00;
+        /* Naranja más oscuro al pasar el mouse */
+      }
+
+      body.light-mode button {
+        background-color: #232F3E;
+        /* Fondo oscuro para botones en modo claro */
+        color: #FFFFFF;
+      }
+
+      body.light-mode button:hover {
+        background-color: #1A242F;
+        /* Fondo ligeramente más oscuro al pasar el mouse */
+      }
+
+      /* Encabezado estilo Amazon */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #232F3E;
+        /* Color de fondo oscuro, similar a Amazon */
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      /* Logo estilo Amazon */
+      .logo {
+        font-size: 28px;
+        /* Tamaño del logo */
+        font-weight: bold;
+        color: #FF9900;
+        /* Color naranja característico de Amazon */
+        font-family: 'Arial', sans-serif;
+        /* Fuente limpia y moderna */
+      }
+
+      /* Barra de búsqueda estilo Amazon */
+      .search-bar {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 300px;
+        /* Un ancho adecuado para la barra de búsqueda */
+        background-color: #FFFFFF;
+        /* Color de fondo blanco para la barra de búsqueda */
+        border: 1px solid #CCCCCC;
+        /* Borde gris claro */
+        border-radius: 4px;
+        /* Bordes redondeados */
+        padding: 5px;
+        /* Espaciado interno */
+      }
+
+      /* Campo de entrada de búsqueda */
+      .search-input {
+        padding: 8px;
+        /* Espaciado interno para el campo de entrada */
+        border: none;
+        /* Sin borde para un diseño limpio */
+        width: 100%;
+        /* Ocupa el 100% del ancho disponible */
+        font-family: 'Arial', sans-serif;
+        /* Fuente limpia */
+        font-size: 14px;
+        /* Tamaño de fuente más pequeño */
+      }
+
+      /* Icono de búsqueda */
+      .search-icon {
+        width: 20px;
+        /* Tamaño del icono */
+        height: auto;
+        cursor: pointer;
+        margin-left: 8px;
+        /* Espaciado entre el campo de entrada y el icono */
+        color: #FF9900;
+        /* Color naranja para el icono */
+      }
+
+      /* Icono de configuración */
+      .settings-icon {
+        width: 20px;
+        /* Tamaño del icono */
+        height: auto;
+        cursor: pointer;
+        margin-left: 10px;
+        /* Espaciado lateral adecuado */
+        color: #FF9900;
+        /* Color naranja para el icono */
+      }
+
+      /* Hover para el campo de búsqueda */
+      .search-input:focus {
+        outline: none;
+        /* Sin borde al hacer foco */
+        border: 1px solid #FF9900;
+        /* Borde naranja al enfocar */
+      }
+
+      /* Hover para los iconos */
+      .search-icon:hover,
+      .settings-icon:hover {
+        opacity: 0.7;
+        /* Disminuir la opacidad al pasar el mouse */
+      }
+
+      .banner {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+      }
+
+      .banner-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .banner-content {
+        position: absolute;
+        bottom: 30px;
+        /* Mantiene el contenido a 30px desde la parte inferior */
+        left: 30px;
+        /* Mantiene el contenido a 30px desde la izquierda */
+        padding: 20px;
+        /* Espaciado alrededor del contenido */
+        background-color: rgba(0, 0, 0, 0.7);
+        /* Fondo oscuro semi-transparente para contraste */
+        border-radius: 5px;
+        /* Bordes redondeados */
+        box-shadow: none;
+        /* Asegúrate de que no haya sombra */
+        z-index: 10;
+        /* Asegúrate de que el contenido esté encima de la imagen */
+      }
+
+      .banner-title {
+        font-size: 32px;
+        /* Tamaño del título */
+        font-weight: bold;
+        color: #FFD700;
+        /* Color dorado */
+      }
+
+      .banner-description {
+        margin: 10px 0;
+        /* Espacio alrededor de la descripción */
+        color: #e0e0e0;
+        /* Color gris claro */
+      }
+
+      .banner-buttons {
+        margin-top: 10px;
+        /* Espacio encima de los botones */
+      }
+
+      .banner-button {
+        padding: 10px 20px;
+        /* Espaciado interno para los botones */
+        border: none;
+        /* Sin borde */
+        background-color: #FF9900;
+        /* Color naranja característico de Amazon */
+        color: white;
+        /* Color del texto en los botones */
+        cursor: pointer;
+        /* Cursor de puntero para indicar que es clickeable */
+        border-radius: 4px;
+        /* Bordes redondeados */
+        margin-right: 15px;
+        /* Espacio entre los botones */
+        transition: background-color 0.3s ease;
+        /* Transición suave al pasar el mouse */
+        font-size: 14px;
+        /* Tamaño de fuente de los botones */
+      }
+
+      .banner-button:hover {
+        background-color: #e68a00;
+        /* Color más oscuro al pasar el mouse */
+      }
+
+      .carousel {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .carousel-item {
+        min-width: 150px;
+        margin-right: 10px;
+        background-color: #333;
+        padding: 10px;
+        border-radius: 4px;
+        scroll-snap-align: start;
+      }
+
+      html,
+      body {
+        overscroll-behavior: none;
+        touch-action: pan-y;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: #222;
+        padding: 20px;
+        border-radius: 8px;
+        width: 400px;
+        color: white;
+      }
+
+      .close {
+        cursor: pointer;
+      }
+
+      .vote-animation {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        color: #FFD700;
+        z-index: 2000;
+        animation: fadeIn 0.5s, fadeOut 0.5s 1.5s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+
+        to {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="logo" style="display: flex; align-items: center;">
+        <!-- Flex para centrar verticalmente -->
+        <img src="https://cdn-icons-png.flaticon.com/512/9093/9093989.png" alt="Logo" style="width: 48px; height: 48px; margin-right: 8px;"> <!-- Tamaño del ícono ajustado a 48px -->
+        <span style="font-size: 24px; font-weight: bold; color: #FF9900;"></span> <!-- Tamaño del texto ajustado -->
+      </div>
+      <div class="search-bar">
+        <input type="text" class="search-input" id="search-input" placeholder="Buscar anime...">
+        <img src="https://cdn-icons-png.flaticon.com/512/122/122932.png" alt="Buscar" class="search-icon" onclick="searchAnime()">
+        <img src="https://cdn-icons-png.flaticon.com/512/262/262569.png" alt="Ajustes" class="settings-icon" onclick="showSettings()">
+      </div>
+    </header>
+    <div class="banner">
+      <img src="https://i.pinimg.com/736x/5b/34/9d/5b349debdf10887275e73c3819631cea.jpg" alt="Gintama" class="banner-image">
+      <div class="banner-content">
+        <div class="banner-title">Demon Slayer: Kimetsu no Yaiba</div>
+        <div class="banner-description">Después de encontrar a su familia asesinada, Tanjiro empieza una lucha contra los demonios que convirtieron a su hermana en una de ellos.</div>
+        <div class="banner-buttons">
+          <button class="banner-button" onclick="showModal('Anime Destacado', 'Después de encontrar a su familia asesinada, Tanjiro empieza una lucha contra los demonios que convirtieron a su hermana en una de ellos.', '2019')">Ver Detalles</button>
+          <button class="banner-button" onclick="addToList('Anime Destacado')">Añadir a Lista</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carruseles de animes -->
+    <div class="carousel-container">
+      <div class="carousel-title"> Emisión</div>
+      <div class="carousel" id="carousel-emision"></div>
+    </div>
+
+    <div class="carousel-container">
+      <div class="carousel-title">Mas Recomendados</div>
+      <div class="carousel" id="carousel-recomendados"></div>
+    </div>
+
+    <div class="carousel-container">
+      <div class="carousel-title">Los mas Populares</div>
+      <div class="carousel" id="carousel-populares"></div>
+    </div>
+
+    <div class="carousel-container">
+      <div class="carousel-title"> Más Vistas</div>
+      <div class="carousel" id="carousel-vistos"></div>
+    </div>
+
+    <!-- Modal de ajustes -->
+    <div id="settings-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeSettings()">&times;</span>
+        <h2>Ajustes</h2>
+        <p><strong>Información de la Página:</strong></p>
+
+        <p>Bienvenido a Glam, tu plataforma de anime favorita. Aquí puedes explorar, calificar y agregar tus animes favoritos a tu lista.</p>
+        <p><strong>Contacto:</strong></p>
+        <p>Para reportar problemas, por favor envía un correo a: support@glam.com</p>
+        <p><strong>Ayuda:</strong></p>
+        <button onclick="showHelp()">Reportar un Problema</button>
+        <p><strong>Perfil:</strong></p>
+        <p>Correo electrónico: <span id="user-email">usuario@example.com</span></p>
+        <button onclick="viewProfile()">Ver Perfil</button>
+      </div>
+    </div>
+
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="modal-title"></h2>
+        <p id="modal-description"></p>
+        <p id="modal-year"></p>
+        <div id="modal-vote">
+          <span>Califica:</span>
+          <button onclick="vote('like')">Bueno</button>
+          <button onclick="vote('dislike')">Malo</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="vote-message" class="vote-animation">Gracias por tu voto!</div>
+
+    <!-- Agregar el script de Firebase aquí -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+    <script>
+      // Configuración de Firebase
+      const firebaseConfig = {
+        apiKey: "TU_API_KEY",
+        authDomain: "TU_AUTH_DOMAIN",
+        databaseURL: "TU_DATABASE_URL",
+        projectId: "TU_PROJECT_ID",
+        storageBucket: "TU_STORAGE_BUCKET",
+        messagingSenderId: "TU_MESSAGING_SENDER_ID",
+        appId: "TU_APP_ID"
+      };
+      const app = firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+      // Funciones de búsqueda y manejo de animaciones
+      function searchAnime() {
+        const query = document.getElementById("search-input").value;
+        // Aquí iría tu lógica para buscar el anime en la base de datos
+        console.log("Buscando anime:", query);
+        document.getElementById("search-input").value = ''; // Limpiar el campo de búsqueda
+      }
+
+      function addToList(animeName) {
+        const animeRef = ref(database, 'animes/' + animeName);
+        set(animeRef, {
+          name: animeName,
+          addedAt: new Date().toISOString()
+        });
+        alert(animeName + ' ha sido añadido a tu lista!');
+      }
+
+      function showModal(title, description, year) {
+        document.getElementById("modal-title").innerText = title;
+        document.getElementById("modal-description").innerText = description;
+        document.getElementById("modal-year").innerText = year;
+        document.getElementById("modal").style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("modal").style.display =
+          "none";
+      }
+
+      function showSettings() {
+        document.getElementById("settings-modal").style.display = "flex";
+      }
+
+      function closeSettings() {
+        document.getElementById("settings-modal").style.display = "none";
+      }
+
+      function showHelp() {
+        alert('Por favor, envía un correo a support@glam.com con la descripción de tu problema.');
+      }
+
+      function viewProfile() {
+        // Aquí iría la lógica para mostrar el perfil del usuario
+        alert('Ver perfil de usuario no implementado aún.');
+      }
+
+      function vote(type) {
+        const voteMessage = document.getElementById("vote-message");
+        voteMessage.style.display = "block";
+        if (type === 'like') {
+          voteMessage.innerText = "Gracias por tu voto positivo!";
+        } else {
+          voteMessage.innerText = "Gracias por tu feedback!";
+        }
+        setTimeout(() => {
+          voteMessage.style.display = "none";
+        }, 3000);
+      }
+      // Funciones de cambio de tema (eliminadas en esta versión)
+      // ...
+    </script>
+  </body>
+
+  </html>
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embajadores Oficiales</title>
+    <style>
+      /* Estilos generales */
+      body {
+        font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+        background-color: #f7f7f7;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+        font-size: 14px;
+      }
+
+      /* Título de sección */
+      .section-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #6001D3;
+      }
+
+      .section-title h2 {
+        font-size: 24px;
+        font-weight: bold;
+        border-bottom: 2px solid #6001D3;
+        display: inline-block;
+        padding-bottom: 10px;
+      }
+
+      /* Estilo para la fila de tarjetas */
+      .admin-container {
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+      }
+
+      /* Tarjeta de administrador */
+      .admin-card {
+        background-color: white;
+        margin: 10px;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+        border: 1px solid #e6e6e6;
+        flex: 0 0 200px;
+        /* Fija el ancho de la tarjeta */
+        position: relative;
+      }
+
+      .admin-card:hover {
+        transform: scale(1.05);
+      }
+
+      .admin-card img {
+        width: 120px;
+        height: 120px;
+        border-radius: 60px;
+        border: 2px solid #6001D3;
+      }
+
+      .admin-card h3 {
+        font-size: 18px;
+        margin: 10px 0;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .admin-card h3 img {
+        margin-left: 5px;
+        width: 15px;
+        height: 15px;
+      }
+
+      .admin-card p {
+        margin: 5px 0;
+        color: #5B5B5B;
+      }
+
+      .circuit {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: 10px;
+      }
+
+      .active {
+        background-color: #0a7e07;
+      }
+
+      .inactive {
+        background-color: #d30000;
+      }
+
+      /* Botones de seguir y chatear */
+      .follow-button,
+      .chat-button {
+        padding: 8px 12px;
+        background-color: #6001D3;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .follow-button {
+        background-color: #1DA1F2;
+        /* Azul tipo Twitter */
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .follow-button:hover {
+        background-color: #1a8cd8;
+        /* Un azul un poco más oscuro al pasar el mouse */
+      }
+
+      .chat-button:hover {
+        background-color: #4a00a2;
+      }
+
+      /* Animación de parpadeo para menores de edad */
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .minor-label {
+        color: red;
+        font-weight: bold;
+        animation: blink 1s infinite;
+      }
+    </style>
+    <script>
+      // Función para seguir a un usuario
+      function followUser(button) {
+        button.textContent = button.textContent === "Seguir" ? "Siguiendo" : "Seguir";
+        button.style.backgroundColor = button.textContent === "Siguiendo" ? "#4CAF50" : "#1DA1F2"; // Cambiar color si es "Siguiendo"
+        alert("Ahora sigues a este usuario.");
+      }
+      // Función para iniciar un chat
+      function startChat(userName, isActive) {
+        if (isActive) {
+          alert("Iniciando chat con " + userName + "...");
+        } else {
+          alert("Este usuario no está disponible para chatear.");
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- Sección para los embajadores oficiales -->
+    <div class="section-title">
+      <h2>Administradores Oficiales</h2>
+    </div>
+
+    <div class="admin-container">
+      <div class="admin-card">
+        <img src="https://m.media-amazon.com/images/S/pv-target-images/80d21af2c4f9fb94460aadf6f0d73b52e91a18d1c9de0fe09e69ac8034a809e9._SX300_.jpg" alt="Administrador 1">
+        <div>
+          <h3>Darel Vega <img src="https://cdn-icons-png.freepik.com/256/16740/16740084.png?semt=ais_hybrid" alt="Verificado"></h3>
+          <p>De: HT, Estados Unidos</p>
+          <p>Rol: Fundador de Vetplex</p>
+          <p>Estado: <span class="circuit inactive"></span> Inactivo</p>
+          <p>Seguidores: 21.2mil</p>
+          <button class="chat-button">Chatear</button>
+          <button class="follow-button" onclick="followUser(this)">Seguir</button>
+        </div>
+      </div>
+
+      <!-- Tarjeta de Efrén García -->
+      <div class="admin-card">
+        <img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2019/03/Inuysasha.jpg?tf=3840x" alt="Administrador Efrén García">
+        <div>
+          <h3>Efrén García <img src="https://cdn-icons-png.flaticon.com/512/5253/5253968.png" alt="Verificado"></h3>
+          <p>De: Caracas, Venezuela</p>
+          <p>Rol: Administrador</p>
+          <p>Estado: <span class="circuit inactive"></span> Inactivo</p>
+          <p>Seguidores: 1.0mil</p>
+          <button class="chat-button">Chatear</button>
+          <button class="follow-button" onclick="followUser(this)">Seguir</button>
+        </div>
+      </div>
+
+      <!-- Tarjeta de Danny -->
+      <div class="admin-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtqEMHANmvgRWswKk0c6zzYnSgjdynIweeqg&usqp=CAU" alt="Administrador Danny">
+        <div>
+          <h3>Danny López <img src="https://cdn-icons-png.flaticon.com/512/3909/3909430.png" alt="Verificado"></h3>
+          <p>De: Buenos Aires, Argentina</p>
+          <p>Rol: Administrador</p>
+          <p>Estado: <span class="circuit active"></span> Activo</p>
+          <p>Seguidores: 831</p>
+          <p class="minor-label">**Menor de Edad**</p> <!-- Etiqueta de menor de edad -->
+          <button class="chat-button" onclick="startChat('Danny López', true)">Chatear</button>
+          <button class="follow-button" onclick="followUser(this)">Seguir</button>
+        </div>
+      </div>
+
+      <!-- Tarjeta de Rafael Lauro -->
+      <div class="admin-card">
+        <img src="https://cdn.pixabay.com/photo/2021/06/07/19/23/kakashi-6318812_1280.jpg" alt="Administrador Rafael Lauro">
+        <div>
+          <h3>Rafael Lauro <img src="https://cdn-icons-png.flaticon.com/512/5253/5253968.png"></h3>
+          <p>De: Caracas, Venezuela</p>
+          <p>Rol: Administrador</p>
+          <p>Estado: <span class="circuit inactive"></span> Inactivo</p>
+          <p>Seguidores: 221</p>
+          <p class="minor-label">**Menor de Edad**</p>
+          <button class="chat-button" onclick="startChat('Rafael Lauro', false)">Chatear</button>
+          <button class="follow-button" onclick="followUser(this)">Seguir</button>
+        </div>
+      </div>
+
+      <!-- Tarjeta de Samuel Marín -->
+      <div class="admin-card">
+        <img src="https://pbs.twimg.com/profile_images/1647039327082356744/ZaCfdoXp_400x400.png" alt="Samuel Marín">
+        <div>
+          <h3>Samuel Marín <img src="https://cdn-icons-png.freepik.com/256/7642/7642170.png?semt=ais_hybrid" alt="Verificado"><span class="badge">Embajador más destacado</span></h3>
+          <p>De: Caracas, Venezuela</p>
+          <p>Rol: Editor de Vet Plex</p>
+          <p>Estado: <span class="circuit active"></span> Activo</p>
+          <p>Seguidores: 19.8mil</p>
+          <button class="chat-button" onclick="startChat('Samuel Marín', true)">Chatear</button>
+          <button class="follow-button" onclick="followUser(this)">Seguir</button>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  </html>
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetPlex - Publicar Anime</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #141414;
+        color: #fff;
+        margin: 0;
+        padding: 20px;
+        transition: background-color 0.5s;
+      }
+
+      h1 {
+        text-align: center;
+        animation: fadeIn 1s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      #header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      form {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: slideIn 0.5s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="search"],
+      select,
+      textarea {
+        margin: 10px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        width: 300px;
+        transition: transform 0.2s;
+      }
+
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      select:focus,
+      textarea:focus {
+        transform: scale(1.02);
+        outline: none;
+      }
+
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #e50914;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #f40612;
+      }
+
+      .carousel {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 10px;
+        padding: 10px 0;
+      }
+
+      .anime-card {
+        flex: 0 0 auto;
+        width: 200px;
+        background-color: #222;
+        border-radius: 5px;
+        position: relative;
+        cursor: pointer;
+        scroll-snap-align: start;
+        padding: 10px;
+        transition: transform 0.3s;
+      }
+
+      .anime-card:hover {
+        transform: scale(1.05);
+      }
+
+      .anime-card img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+      }
+
+      .rating {
+        margin-top: 10px;
+      }
+
+      .anime-info {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .info-content {
+        background-color: #333;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        color: #fff;
+        position: relative;
+        animation: fadeIn 0.5s;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 40px;
+        cursor: pointer;
+        color: red;
+        font-size: 20px;
+      }
+
+      .report-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        width: 24px;
+        /* Ajusta el tamaño según lo necesites */
+        height: 24px;
+        /* Ajusta el tamaño según lo necesites */
+      }
+
+      .error {
+        color: red;
+        text-align: center;
+      }
+
+      .success {
+        color: green;
+        text-align: center;
+      }
+
+      .report-form {
+        margin-top: 20px;
+        display: none;
+        /* Oculta el formulario de reporte inicialmente */
+      }
+
+      .star {
+        cursor: pointer;
+        color: gray;
+      }
+
+      .star.selected {
+        color: gold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>Animes Publicados por Usuarios</h1>
+    </div>
+    <form id="animeForm">
+      <input type="text" id="title" placeholder="Título del Anime" required>
+      <input type="number" id="year" placeholder="Año de Estreno" required>
+      <input type="text" id="synopsis" placeholder="Sinopsis" required>
+      <input type="text" id="imageUrl" placeholder="URL de la Imagen" required>
+      <button type="submit">Publicar Anime</button>
+      <div class="error" id="error"></div>
+      <div class="success" id="success"></div>
+    </form>
+
+    <h2>Animes Publicados</h2>
+    <div class="carousel" id="animeCarousel"></div>
+
+    <div class="anime-info" id="animeInfo">
+      <div class="info-content" id="infoContent">
+        <span class="close-btn" id="closeBtn">✖</span>
+        <img src="https://cdn-icons-png.freepik.com/512/9305/9305658.png" alt="Reportar" class="report-icon" id="reportIcon">
+        <h3 id="infoTitle"></h3>
+        <p id="infoYear"></p>
+        <p id="infoSynopsis"></p>
+        <div class="rating">
+          <h4>Califica este anime:</h4>
+          <span id="starRating">
+            <i class="fas fa-star star" data-value="1"></i>
+            <i class="fas fa-star star" data-value="2"></i>
+            <i class="fas fa-star star" data-value="3"></i>
+            <i class="fas fa-star star" data-value="4"></i>
+            <i class="fas fa-star star" data-value="5"></i>
+          </span>
+          <div class="success" id="ratingSuccess"></div>
+        </div>
+
+        <!-- Formulario de reporte -->
+        <div class="report-form" id="reportForm">
+          <h4>Reportar Anime</h4>
+          <input type="text" id="telegramUser" placeholder="Nombre de usuario en Telegram" required>
+          <select id="reportReason" required>
+            <option value="">Selecciona un motivo</option>
+            <option value="Error en el episodio">Error en el episodio</option>
+            <option value="Problemas de sincronización">Problemas de sincronización</option>
+            <option value="Mala calidad">Mala calidad</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <textarea id="customReason" placeholder="Escribe el motivo del reporte si seleccionaste 'Otros'" rows="4"></textarea>
+          <button id="reportBtn">Enviar Reporte</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import {
+        initializeApp
+      } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+        onValue
+      } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyBGymYEny8_sW8LremajNvVrDzF2OvRqtk",
+        authDomain: "vetplex-animes.firebaseapp.com",
+        projectId: "vetplex-animes",
+        storageBucket: "vetplex-animes.appspot.com",
+        messagingSenderId: "485618641909",
+        appId: "1:485618641909:web:8030f45a4ad757a4878ebc",
+        measurementId: "G-3QGGL7CWQ0"
+      };
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+      const animeForm = document.getElementById('animeForm');
+      const animeCarousel = document.getElementById('animeCarousel');
+      const successDiv = document.getElementById('success');
+      const errorDiv = document.getElementById('error');
+      const closeBtn = document.getElementById('closeBtn');
+      const animeInfo = document.getElementById('animeInfo');
+      const infoContent = document.getElementById('infoContent');
+      const reportIcon = document.getElementById('reportIcon');
+      const reportForm = document.getElementById('reportForm');
+      const ratingSuccess = document.getElementById('ratingSuccess');
+      // Función para crear una tarjeta de anime
+      function createAnimeCard(anime) {
+        const card = document.createElement('div');
+        card.classList.add('anime-card');
+        card.innerHTML = `
+        <img src="${anime.imageUrl}" alt="${anime.title}">
+        <h3>${anime.title}</h3>
+        <p>Año: ${anime.year}</p>
+        <button class="view-btn">Ver Detalles</button>
+      `;
+        animeCarousel.appendChild(card);
+        // Evento para mostrar detalles del anime
+        card.querySelector('.view-btn').addEventListener('click', () => {
+          showAnimeInfo(anime);
+        });
+      }
+      // Función para mostrar información del anime
+      function showAnimeInfo(anime) {
+        document.getElementById('infoTitle').textContent = anime.title;
+        document.getElementById('infoYear').textContent = `Año: ${anime.year}`;
+        document.getElementById('infoSynopsis').textContent = anime.synopsis;
+        animeInfo.style.display = 'flex';
+        resetStarRating();
+        resetReportForm(); // Reiniciar el formulario de reporte
+      }
+      // Reiniciar el formulario de reporte
+      function resetReportForm() {
+        reportForm.style.display = 'none'; // Ocultar el formulario de reporte
+        document.getElementById('telegramUser').value = '';
+        document.getElementById('reportReason').value = '';
+        document.getElementById('customReason').value = '';
+      }
+      // Reiniciar el rating de estrellas
+      function resetStarRating() {
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+          star.classList.remove('selected');
+        });
+        ratingSuccess.textContent = '';
+      }
+      // Evento para cerrar la información del anime
+      closeBtn.addEventListener('click', () => {
+        animeInfo.style.display = 'none';
+      });
+      // Evento para mostrar el formulario de reporte
+      reportIcon.addEventListener('click', () => {
+        document.getElementById('reportForm').style.display = 'block'; // Mostrar formulario de reporte
+        animeInfo.style.display = 'flex'; // Asegurarse de que la información del anime se muestre
+        document.querySelector('form').style.display = 'none'; // Ocultar el formulario principal
+      });
+      // Evento para calificar el anime
+      document.getElementById('starRating').addEventListener('click', (event) => {
+        if (event.target.classList.contains('star')) {
+          const selectedValue = event.target.getAttribute('data-value');
+          resetStarRating(); // Reiniciar el rating anterior
+          for (let i = 1; i <= selectedValue; i++) {
+            document.querySelector(`.star[data-value="${i}"]`).classList.add('selected');
+          }
+          ratingSuccess.textContent = `Has calificado con ${selectedValue} estrellas.`;
+        }
+      });
+      // Evento para enviar el reporte
+      document.getElementById('reportBtn').addEventListener('click', (event) => {
+        event.preventDefault(); // Prevenir el comportamiento por defecto
+        const telegramUser = document.getElementById('telegramUser').value;
+        const reportReason = document.getElementById('reportReason').value;
+        const customReason = document.getElementById('customReason').value;
+        if (telegramUser && reportReason) {
+          // Aquí puedes implementar la lógica para enviar el reporte a Firebase o a otro lugar
+          alert(`Reporte enviado: \nUsuario: ${telegramUser}\nRazón: ${reportReason}${customReason ? '\nDetalles: ' + customReason : ''}`);
+          resetReportForm(); // Reiniciar el formulario de reporte
+          animeInfo.style.display = 'none'; // Ocultar la información del anime
+        } else {
+          alert('Por favor, completa todos los campos obligatorios.');
+        }
+      });
+      // Evento para publicar anime
+      animeForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('title').value;
+        const year = document.getElementById('year').value;
+        const synopsis = document.getElementById('synopsis').value;
+        const imageUrl = document.getElementById('imageUrl').value;
+        const animeData = {
+          title: title,
+          year: year,
+          synopsis: synopsis,
+          imageUrl: imageUrl
+        };
+        const newAnimeKey = ref(database, 'animes').push().key; // Genera una nueva clave para el anime
+        set(ref(database, 'animes/' + newAnimeKey), animeData)
+          .then(() => {
+            successDiv.textContent = 'Anime publicado exitosamente.';
+            errorDiv.textContent = '';
+            createAnimeCard(animeData); // Crear tarjeta del nuevo anime
+            animeForm.reset(); // Reiniciar el formulario
+          })
+          .catch((error) => {
+            errorDiv.textContent = 'Error al publicar anime: ' + error.message;
+            successDiv.textContent = '';
+          });
+      });
+      // Función para obtener animes desde Firebase
+      onValue(ref(database, 'animes'), (snapshot) => {
+        animeCarousel.innerHTML = ''; // Limpiar el carrusel
+        snapshot.forEach((childSnapshot) => {
+          const anime = childSnapshot.val();
+          createAnimeCard(anime);
+        });
+      });
+    </script>
+  </body>
+
+  </html>
+
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetPlex - Notificaciones y Configuraciones</title>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #1c1c1c;
+        color: #ffffff;
+        margin: 0;
+        padding: 0;
+        line-height: 1.5;
+      }
+
+      #notification-blocker {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.85);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .notification-content {
+        background-color: #252525;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 450px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+        text-align: center;
+        position: relative;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      h1 {
+        font-size: 1.8em;
+        color: #f5c518;
+        margin-bottom: 15px;
+      }
+
+      h2 {
+        font-size: 1.4em;
+        margin: 15px 0;
+        color: #e50914;
+      }
+
+      p {
+        font-size: 1em;
+        color: #cccccc;
+        margin-bottom: 15px;
+      }
+
+      .version {
+        font-size: 1.2em;
+        color: #f5c518;
+      }
+
+      .btn {
+        background-color: #f5c518;
+        color: #000000;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px 0;
+        transition: background-color 0.3s;
+        width: 100%;
+        font-size: 1em;
+      }
+
+      .btn:hover {
+        background-color: #e0a812;
+      }
+
+      #shortcut {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: url('https://cdn-icons-png.flaticon.com/512/3097/3097687.png') no-repeat center center;
+        background-size: contain;
+        cursor: pointer;
+        z-index: 1001;
+      }
+
+      #report-form {
+        margin-top: 20px;
+        display: none;
+      }
+
+      #warning-message {
+        color: #ffcc00;
+        margin-top: 10px;
+        display: none;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+    <script type="module">
+      // Importar las funciones necesarias de Firebase
+      import {
+        initializeApp
+      } from "firebase/app";
+      import {
+        getDatabase,
+        ref,
+        set
+      } from "firebase/database";
+      // Configuración de Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyBGymYEny8_sW8LremajNvVrDzF2OvRqtk",
+        authDomain: "vetplex-animes.firebaseapp.com",
+        databaseURL: "https://vetplex-animes-default-rtdb.firebaseio.com",
+        projectId: "vetplex-animes",
+        storageBucket: "vetplex-animes.appspot.com",
+        messagingSenderId: "485618641909",
+        appId: "1:485618641909:web:8030f45a4ad757a4878ebc",
+        measurementId: "G-3QGGL7CWQ0"
+      };
+      // Inicializar Firebase
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+      // Función para enviar el reporte a Firebase
+      function sendReport(problemType) {
+        const reportRef = ref(database, 'reports/' + Date.now());
+        set(reportRef, {
+          problemType: problemType,
+          timestamp: new Date().toISOString()
+        });
+      }
+      // Mostrar y ocultar la pantalla de bloqueo de notificación
+      document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('shortcut').onclick = function() {
+          document.getElementById('notification-blocker').style.display = 'flex';
+        }
+        document.getElementById('accept-btn').onclick = function() {
+          document.getElementById('notification-blocker').style.display = 'none';
+        }
+        document.getElementById('report-btn').onclick = function() {
+          document.getElementById('report-form').style.display = 'block';
+        }
+        // Enviar el reporte y mostrar advertencia
+        document.getElementById('submit-report').onclick = function() {
+          const problemType = document.getElementById('problem-type').value;
+          sendReport(problemType);
+          document.getElementById('warning-message').style.display = 'block';
+        }
+      });
+    </script>
+  </head>
+
+  <body>
+    <!-- Atajo para abrir la notificación -->
+    <div id="shortcut" title="Verificar anime preferido"></div>
+
+    <!-- Pantalla de bloqueo con notificación -->
+    <div id="notification-blocker">
+      <div class="notification-content">
+        <h1>¡Atención, usuarios de VetPlex!</h1>
+        <p id="notification-message">
+          Nos complace anunciar que la versión <span class="version">2.0</span> ha coordinado nuevas funciones en la publicación de animes privados. ¡Estén atentos para más actualizaciones!
+        </p>
+
+        <!-- Formulario de reporte -->
+        <div id="report-form">
+          <h2>Reportar Problema</h2>
+          <p>Selecciona el problema que estás experimentando:</p>
+          <select id="problem-type">
+            <option value="video-calidad">Problema con la calidad del video</option>
+            <option value="audio-sincronizacion">Problema de sincronización de audio</option>
+            <option value="error-carga">Error al cargar el capítulo</option>
+            <option value="otro">Otro problema</option>
+          </select>
+
+          <button class="btn" id="submit-report">Enviar Reporte</button>
+          <p id="warning-message">No todos los reportes son procesados de inmediato. Haremos lo posible por revisarlo lo más pronto posible.</p>
+        </div>
+
+        <!-- Botón para aceptar y cerrar la notificación -->
+        <button class="btn" id="accept-btn">Aceptar</button>
+
+        <!-- Botón para reportar problemas -->
+        <button class="btn" id="report-btn">Reportar Problema</button>
+      </div>
+    </div>
+  </body>
+
+  </html>
+
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrusel de Personajes de Anime</title>
+    <style>
+      /* Estilo general del carrusel */
+      .carousel-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin: 20px auto;
+        overflow: hidden;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background: #f9f9f9;
+      }
+
+      .carousel {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      .slide {
+        min-width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+        text-align: center;
+        position: relative;
+      }
+
+      .slide img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+
+      .slide h2 {
+        margin: 10px 0;
+        font-size: 1.4em;
+        color: #333;
+      }
+
+      .slide p {
+        margin: 5px 0;
+        font-size: 1.2em;
+        color: #666;
+      }
+
+      .follow-button {
+        background-color: #25d366;
+        /* Color de WhatsApp */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 1em;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .follow-button:hover {
+        background-color: #1ebc59;
+      }
+
+      .prev-button,
+      .next-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.3);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+        font-size: 1.5em;
+        z-index: 10;
+      }
+
+      .prev-button {
+        left: 10px;
+      }
+
+      .next-button {
+        right: 10px;
+      }
+
+      /* Estilo para la animación de la burbujita */
+      .bubble {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background-color: #25d366;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s, transform 0.5s;
+      }
+
+      .bubble.show {
+        display: block;
+        opacity: 1;
+        transform: translateX(-50%) translateY(-50px);
+      }
+
+      /* Estilo para las recomendaciones sin interferir con la página principal */
+      .recommendations-container {
+        margin: 20px auto;
+        max-width: 800px;
+        padding: 20px;
+        background: #f0f0f0;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        position: relative;
+        font-family: Arial, sans-serif;
+        /* Evitar interferencias con la fuente de la página */
+      }
+
+      .recommendations-container h3 {
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        color: #333;
+      }
+
+      .recommendations-container ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .recommendations-container li {
+        margin: 10px 0;
+        font-size: 1.2em;
+        color: #555;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+      }
+
+      .recommendations-container li .name-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .recommendations-container li img.verify-icon {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+      }
+
+      .recommendations-container button {
+        background-color: #25d366;
+        /* Color de WhatsApp */
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 15px;
+        cursor: pointer;
+        font-size: 0.9em;
+        margin-left: 10px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .recommendations-container button:hover {
+        background-color: #1ebc59;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="carousel-container">
+      <div class="carousel">
+        <!-- Slide 1 -->
+        <div class="slide">
+          <img src="https://imgix.ranker.com/list_img_v2/8413/2728413/original/best-naruto-uzumaki-quotes?fit=crop&fm=pjpg&q=80&dpr=2&w=1200&h=720" alt="Naruto Uzumaki">
+          <h2>Naruto Uzumaki</h2>
+          <p>Seguidores: 2.5M</p>
+          <button class="follow-button" onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="slide">
+          <img src="https://image.api.playstation.com/vulcan/ap/rnd/202402/2304/60c489bc534a5909dad165af757a0af187edf44a9a1f4515.png" alt="Goku">
+          <h2>Goku</h2>
+          <p>Seguidores: 3.2M</p>
+          <button class="follow-button" onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="slide">
+          <img src="https://asset-2.tstatic.net/jogja/foto/bank/images/Monkey-D-Luffy.jpg" alt="Monkey D. Luffy">
+          <h2>Monkey D. Luffy</h2>
+          <p>Seguidores: 1.8M</p>
+          <button class="follow-button" onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </div>
+        <!-- Slide 4 -->
+        <div class="slide">
+          <img src="https://ramenparados.com/wp-content/uploads/2020/01/sailor-moon-1000x600.jpg" alt="Sailor Moon">
+          <h2>Sailor Moon</h2>
+          <p>Seguidores: 2.4M</p>
+          <button class="follow-button" onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </div>
+        <!-- Slide 5 -->
+        <div class="slide">
+          <img src="https://lucien0maverick.wordpress.com/wp-content/uploads/2015/10/spike-spiegel-2.jpg" alt="Spike Spiegel">
+          <h2>Spike Spiegel</h2>
+          <p>Seguidores: 1.4M</p>
+          <button class="follow-button" onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </div>
+        <!-- Slide 6 -->
+        <div class="slide">
+          <img src="https://i.redd.it/ylpsqwy1uoe81.jpg" alt="Edward Elric">
+          <h2>Edward Elric</h2>
+          <p>Seguidores: 1.9M</p>
+          <button class="follow-button" onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </div>
+      </div>
+      <button class="prev-button">&lt;</button>
+      <button class="next-button">&gt;</button>
+    </div>
+
+    <div class="recommendations-container">
+      <h3>Personajes Recomendados</h3>
+      <ul>
+        <li>
+          <div class="name-container">
+            Gohan (Dragon Ball)
+            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
+          </div>
+          <button onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </li>
+        <li>
+          <div class="name-container">
+            Inuyasha
+            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
+          </div>
+          <button onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </li>
+        <li>
+          <div class="name-container">
+            Kagome Higurashi
+            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
+          </div>
+          <button onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </li>
+        <li>
+          <div class="name-container">
+            Miroku
+            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
+          </div>
+          <button onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </li>
+        <li>
+          <div class="name-container">
+            Sango
+            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
+          </div>
+          <button onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </li>
+        <li>
+          <div class="name-container">
+            Kenshin Himura (Rurouni Kenshin)
+            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
+          </div>
+          <button onclick="follow(this)">Seguir</button>
+          <div class="bubble">¡Siguiendo!</div>
+        </li>
+      </ul>
+    </div>
+
+    <script>
+      // Función para cambiar el slide
+      let index = 0;
+      const slides = document.querySelectorAll('.slide');
+      const totalSlides = slides.length;
+
+      function showSlide(n) {
+        if (n >= totalSlides) index = 0;
+        else if (n < 0) index = totalSlides - 1;
+        else index = n;
+        const offset = -index * 100;
+        document.querySelector('.carousel').style.transform = `translateX(${offset}%)`;
+      }
+      document.querySelector('.prev-button').addEventListener('click', () => {
+        showSlide(index - 1);
+      });
+      document.querySelector('.next-button').addEventListener('click', () => {
+        showSlide(index + 1);
+      });
+      // Función para seguir/unfollow
+      function follow(button) {
+        const bubble = button.nextElementSibling;
+        button.textContent = button.textContent === 'Seguir' ? 'Siguiendo' : 'Seguir';
+        bubble.classList.add('show');
+        setTimeout(() => bubble.classList.remove('show'), 2000);
+      }
+    </script>
+  </body>
+
+  </html>
+
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrusel de Anime</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #111;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+      }
+
+      .section-title {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 24px;
+        color: #fff;
+      }
+
+      .carousel-container {
+        position: relative;
+        max-width: 100%;
+        margin: 0 auto;
+        overflow: hidden;
+      }
+
+      .carousel {
+        display: flex;
+        overflow-x: scroll;
+        scroll-behavior: smooth;
+        gap: 10px;
+        padding: 10px;
+        scrollbar-width: none;
+        /* Oculta el scrollbar en Firefox */
+      }
+
+      .carousel::-webkit-scrollbar {
+        display: none;
+        /* Oculta el scrollbar en Webkit browsers */
+      }
+
+      .carousel-item {
+        position: relative;
+        min-width: 200px;
+        max-width: 200px;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #222;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .carousel-item:hover {
+        transform: scale(1.05);
+      }
+
+      .carousel-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .carousel-item-content {
+        padding: 10px;
+        text-align: center;
+        color: #fff;
+        background: #333;
+      }
+
+      .title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 5px;
+      }
+
+      .new-tag {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: red;
+        color: #fff;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+
+      .scroll-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 100;
+      }
+
+      .scroll-button.prev {
+        left: 10px;
+      }
+
+      .scroll-button.next {
+        right: 10px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .modal-content {
+        background: #222;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 500px;
+        color: #fff;
+        position: relative;
+      }
+
+      .modal-close {
+        cursor: pointer;
+        font-size: 20px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #fff;
+      }
+
+      .season-select {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .episode-list {
+        margin-top: 10px;
+        padding: 0;
+        list-style-type: none;
+      }
+
+      .episode-list li {
+        margin: 5px 0;
+      }
+
+      .episode-list a {
+        color: #00f;
+        text-decoration: none;
+      }
+
+      .episode-list a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="section-title">Octubre 2024</div>
+    <div class="carousel-container">
+      <button class="scroll-button prev">&#10094;</button>
+      <div class="carousel">
+        <!-- Cada ítem del carrusel -->
+        <div class="carousel-item" data-info='{"title":"KamiErabi GOD.app","date":"3 de julio de 2024","rating":"65%","synopsis":"KamiErabi God.app es una serie de televisión de anime japonesa. Fue creada por Yoko Taro, producida por Unend y dirigida por Hiroyuki Seshita, la serie se emitirá en el bloque de programación +Ultra de Fuji TV en octubre a diciembre de 2023. "}'>
+          <div class="new-tag">Al 65% le gustó este programa de TV</div>
+          <img src="https://m.media-amazon.com/images/M/MV5BNzEzZjljMzAtNjJmMi00MTg3LTg1MDEtYWRiZWE4MjNlZTZlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Oshi no Ko">
+          <div class="carousel-item-content">
+            <div class="title">Oshi no Ko</div>
+          </div>
+        </div>
+        <div class="carousel-item" data-info='{"title":"Tokidoki Bosotto","date":"3 de julio de 2024","rating":"7.951","synopsis":"Alisa ‘Alya’ Kujou, una estudiante mitad rusa y mitad japonesa, empieza a mostrar interés por su compañero Masachika Kuze, quien secretamente entiende ruso."}'>
+          <div class="new-tag">20 Millones Vistas</div>
+          <img src="https://pbs.twimg.com/media/FrbtnvwWAAMBLto.jpg:large" alt="Tokidoki Bosotto">
+          <div class="carousel-item-content">
+            <div class="title">Tokidoki Bosotto</div>
+          </div>
+        </div>
+        <!-- Anime con temporadas -->
+        <div class="carousel-item" data-info='{"title":"Kami no Tou","date":"7 de julio de 2024","rating":"7.341","synopsis":"Ja Wangnan lucha por pasar el piso 20 de la Torre. En su viaje, conoce a Viole, un personaje misterioso y poderoso, y lo invita a unirse a su equipo.","hasSeasons":true}'>
+          <div class="new-tag">Mejor de la semana</div>
+          <img src="https://cdn.myanimelist.net/images/anime/1949/142074.jpg" alt="Kami no Tou">
+          <div class="carousel-item-content">
+            <div class="title">Kami no Tou</div>
+          </div>
+        </div>
+        <div class="carousel-item" data-info='{"title":"One Piece: Arco de Egghead","date":"Agosto de 2024","rating":"No disponible aún","synopsis":"Luffy y su tripulación continúan sus aventuras en el misterioso Arco de Egghead."}'>
+          <div class="new-tag">Nuevos Capitulos</div>
+          <img src="https://resizing.flixster.com/WZEVZ7ud0y0fN5kWxtNwUoWVyXA=/fit-in/352x330/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p26331776_b_v7_ac.jpg" alt="One Piece: Arco de Egghead">
+          <div class="carousel-item-content">
+            <div class="title">One Piece: Arco de Egghead</div>
+          </div>
+        </div>
+        <div class="carousel-item" data-info='{"title":"Detective Conan: Caso Cerrado","date":"Agosto de 2024","rating":"No disponible aún","synopsis":"Nuevos casos y misterios para Conan Edogawa y sus amigos."}'>
+          <div class="new-tag">1000 Millones Vistas</div>
+          <img src="https://m.media-amazon.com/images/M/MV5BOTBhOTlkNDctMDg1Zi00MGViLWJhMTUtMTU1OWEyYTUzZjdhXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_FMjpg_UX1000_.jpg" alt="Detective Conan: Caso Cerrado">
+          <div class="carousel-item-content">
+            <div class="title">Detective Conan: Caso Cerrado</div>
+          </div>
+        </div>
+      </div>
+      <button class="scroll-button next">&#10095;</button>
+    </div>
+
+    <div class="modal" id="anime-modal">
+      <div class="modal-content">
+        <span class="modal-close" id="modal-close">&times;</span>
+        <h2 id="modal-title"></h2>
+        <p id="modal-date"></p>
+        <p id="modal-rating"></p>
+        <p id="modal-synopsis"></p>
+        <div class="season-select" id="season-select" style="display: none;">
+          <button onclick="showEpisodes('season1')">Season 1</button>
+          <button onclick="showEpisodes('season2')">Season 2</button>
+          <div id="season-episodes" style="margin-top: 10px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const prevButton = document.querySelector('.scroll-button.prev');
+      const nextButton = document.querySelector('.scroll-button.next');
+      const carousel = document.querySelector('.carousel');
+      const modal = document.getElementById('anime-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalDate = document.getElementById('modal-date');
+      const modalRating = document.getElementById('modal-rating');
+      const modalSynopsis = document.getElementById('modal-synopsis');
+      const modalClose = document.getElementById('modal-close');
+      const seasonSelect = document.getElementById('season-select');
+      const seasonEpisodes = document.getElementById('season-episodes');
+      prevButton.addEventListener('click', () => {
+        carousel.scrollBy({
+          left: -200,
+          behavior: 'smooth'
+        });
+      });
+      nextButton.addEventListener('click', () => {
+        carousel.scrollBy({
+          left: 200,
+          behavior: 'smooth'
+        });
+      });
+      document.querySelectorAll('.carousel-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const info = JSON.parse(item.getAttribute('data-info'));
+          modalTitle.innerText = info.title;
+          modalDate.innerText = `Fecha de estreno: ${info.date}`;
+          modalRating.innerText = `Calificación: ${info.rating}`;
+          modalSynopsis.innerText = info.synopsis;
+          if (info.hasSeasons) {
+            seasonSelect.style.display = 'block';
+            seasonEpisodes.innerHTML = ''; // Limpiar episodios previos
+          } else {
+            seasonSelect.style.display = 'none';
+          }
+          modal.style.display = 'flex';
+        });
+      });
+      modalClose.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+
+      function showEpisodes(season) {
+        if (season === 'season1') {
+          seasonEpisodes.innerHTML = '<p>La primera temporada no está disponible en este momento.</p>';
+        } else if (season === 'season2') {
+          seasonEpisodes.innerHTML = `
+                    <ul class="episode-list">
+                        <li><a href="https://m.animeflv.net/ver/kami-no-tou-ouji-no-kikan-1" target="_blank">Episodio 1</a></li>
+                        <li><a href="https://m.animeflv.net/ver/kami-no-tou-ouji-no-kikan-2" target="_blank">Episodio 2</a></li>
+                        <li><a href="https://m.animeflv.net/ver/kami-no-tou-ouji-no-kikan-3" target="_blank">Episodio 3</a></li>
+                        <li><a href="https://m.animeflv.net/ver/kami-no-tou-ouji-no-kikan-4" target="_blank">Episodio 4</a></li>
+                        <li><a href="https://m.animeflv.net/ver/kami-no-tou-ouji-no-kikan-5" target="_blank">Episodio 5</a></li>
+                        <li><a href="https://m.animeflv.net/ver/kami-no-tou-ouji-no-kikan-6" target="_blank">Episodio 6</a></li>
+                        <li><a href="https://m.animeflv.net/ver/kami-no-tou-ouji-no-kikan-7" target="_blank">Episodio 7</a></li>
+                        <li><a href="https://m.animeflv.net/ver/kami-no-tou-ouji-no-kikan-8" target="_blank">Episodio 8</a></li>
+                        <li><a href="https://www.yourupload.com/watch/Ea6Q08k5ik1G">Episodio 9</a></li>
+                         <li><a href="https://www.yourupload.com/watch/rBE1D67s8ApI">Episodio 10</a></li>
+                          <li><a href="https://www.yourupload.com/watch/36Hiex7273RG">Episodio 11</a></li>
+                    </ul>
+                    <p>Próximo episodio disponible: 1 de octubre de 2024</p>
+                `;
+        }
+      }
+    </script>
+  </body>
+
+  </html>
+
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetPlex - Publica tu Anime Privado</title>
+    <style>
+      /* Estilos para la sección de publicar anime con fondo oscuro */
+      #publishSection {
+        display: none;
+        /* Inicialmente oculto */
+        background-color: #333;
+        /* Fondo oscuro */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        margin: 20px auto;
+        max-width: 800px;
+        color: #fff;
+        /* Texto blanco */
+      }
+
+      #publishSection h2 {
+        margin-top: 0;
+      }
+
+      #publishSection label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: bold;
+      }
+
+      #publishSection input,
+      #publishSection textarea,
+      #publishSection select {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin: 5px 0 15px;
+        border: 1px solid #555;
+        /* Borde gris oscuro */
+        border-radius: 4px;
+        background-color: #444;
+        /* Fondo del input y textarea */
+        color: #fff;
+        /* Texto blanco en inputs */
+      }
+
+      #publishSection button {
+        padding: 10px 20px;
+        background-color: #34b7f1;
+        /* Color de botón */
+        color: #ffffff;
+        /* Texto blanco */
+        border: none;
+        cursor: pointer;
+      }
+
+      #publishSection button:hover {
+        background-color: #1a8dbf;
+        /* Color de botón al pasar el cursor */
+      }
+
+      /* Estilos para la sección de animes privados */
+      #privateAnimeSection {
+        background-color: #222;
+        color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        margin: 20px auto;
+        max-width: 800px;
+      }
+
+      #privateAnimeSection h2 {
+        margin-top: 0;
+      }
+
+      .anime-card {
+        background-color: #333;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+      }
+
+      .anime-card img {
+        max-width: 100%;
+        border-radius: 4px;
+      }
+
+      .anime-card h3 {
+        margin: 10px 0 5px;
+      }
+
+      .anime-card p {
+        margin: 5px 0;
+      }
+
+      .anime-card .trailer-link {
+        color: #34b7f1;
+      }
+
+      .edit-button {
+        background-color: #ffcc00;
+        /* Color del botón de editar */
+        color: #000;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        margin-top: 10px;
+      }
+
+      .edit-button:hover {
+        background-color: #e6b800;
+        /* Color al pasar el cursor */
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Sección para publicar anime privado -->
+    <div id="publishSection">
+      <h2>Publicar Anime Privado</h2>
+      <form id="publishForm">
+        <label for="animeName">Nombre del Anime:</label>
+        <input type="text" id="animeName" required>
+
+        <label for="genres">Géneros:</label>
+        <select id="genres" multiple required>
+          <option value="accion">Acción</option>
+          <option value="comedia">Comedia</option>
+          <option value="drama">Drama</option>
+          <option value="fantasia">Fantasía</option>
+          <option value="romance">Romance</option>
+        </select>
+
+        <label for="seasons">Cantidad de Temporadas:</label>
+        <input type="number" id="seasons" required>
+
+        <label for="episodes">Cantidad de Episodios:</label>
+        <input type="number" id="episodes" required>
+
+        <label for="trailerURL">URL del Tráiler:</label>
+        <input type="url" id="trailerURL" required>
+
+        <label for="animeImage">Foto del Anime:</label>
+        <input type="file" id="animeImage" accept="image/*" required>
+
+        <label for="synopsis">Sinopsis:</label>
+        <textarea id="synopsis" rows="4" required></textarea>
+
+        <label for="year">Año:</label>
+        <input type="number" id="year" required>
+
+        <label for="rating">Valoración:</label>
+        <select id="rating" required>
+          <option value="1">1 Estrella</option>
+          <option value="2">2 Estrellas</option>
+          <option value="3">3 Estrellas</option>
+          <option value="4">4 Estrellas</option>
+          <option value="5">5 Estrellas</option>
+        </select>
+
+        <label for="status">Estado:</label>
+        <select id="status" required>
+          <option value="completo">Completo</option>
+          <option value="en_emision">En Emisión</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+
+        <button type="submit">Publicar Anime</button>
+      </form>
+    </div>
+
+    <!-- Sección para mostrar animes privados publicados -->
+    <div id="privateAnimeSection">
+      <h2>Animes Privados Publicados</h2>
+      <!-- Aquí se agregarán los animes publicados -->
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const publishSection = document.getElementById('publishSection');
+        const publishForm = document.getElementById('publishForm');
+        const privateAnimeSection = document.getElementById('privateAnimeSection');
+        let currentEditCard = null; // Variable para almacenar la tarjeta actualmente en edición
+        // Función para mostrar la sección de publicar anime
+        function showPublishSection() {
+          publishSection.style.display = 'block';
+        }
+        // Evento de envío del formulario
+        publishForm.addEventListener('submit', function(event) {
+          event.preventDefault(); // Evita el envío del formulario
+          // Obtener los valores del formulario
+          const animeName = document.getElementById('animeName').value;
+          const genres = Array.from(document.getElementById('genres').selectedOptions).map(option => option.value).join(', ');
+          const seasons = document.getElementById('seasons').value;
+          const episodes = document.getElementById('episodes').value;
+          const trailerURL = document.getElementById('trailerURL').value;
+          const synopsis = document.getElementById('synopsis').value;
+          const year = document.getElementById('year').value;
+          const rating = document.getElementById('rating').value;
+          const status = document.getElementById('status').value;
+          // Obtener la imagen
+          const animeImage = document.getElementById('animeImage').files[0];
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            if (currentEditCard) {
+              // Si estamos editando una tarjeta existente, actualizamos su contenido
+              currentEditCard.querySelector('img').src = event.target.result;
+              currentEditCard.querySelector('h3').innerText = `${animeName} (${year})`;
+              currentEditCard.querySelector('p:nth-of-type(1)').innerHTML = `<strong>Géneros:</strong> ${genres}`;
+              currentEditCard.querySelector('p:nth-of-type(2)').innerHTML = `<strong>Temporadas:</strong> ${seasons}`;
+              currentEditCard.querySelector('p:nth-of-type(3)').innerHTML = `<strong>Episodios:</strong> ${episodes}`;
+              currentEditCard.querySelector('p:nth-of-type(4)').innerHTML = `<strong>Valoración:</strong> ${rating} Estrellas`;
+              currentEditCard.querySelector('p:nth-of-type(5)').innerHTML = `<strong>Estado:</strong> ${status.replace('_', ' ')}`;
+              currentEditCard.querySelector('p:nth-of-type(6)').innerHTML = `<strong>Sinopsis:</strong> ${synopsis}`;
+              currentEditCard.querySelector('.trailer-link').href = trailerURL;
+              currentEditCard.querySelector('.trailer-link').innerText = 'Ver Tráiler';
+              currentEditCard = null; // Reseteamos la tarjeta editada
+            } else {
+              // Crear una nueva tarjeta de anime
+              const animeCard = document.createElement('div');
+              animeCard.classList.add('anime-card');
+              animeCard.innerHTML = `
+                            <img src="${event.target.result}" alt="${animeName}">
+                            <h3>${animeName} (${year})</h3>
+                            <p><strong>Géneros:</strong> ${genres}</p>
+                            <p><strong>Temporadas:</strong> ${seasons}</p>
+                            <p><strong>Episodios:</strong> ${episodes}</p>
+                            <p><strong>Valoración:</strong> ${rating} Estrellas</p>
+                            <p><strong>Estado:</strong> ${status.replace('_', ' ')}</p>
+                            <p><strong>Sinopsis:</strong> ${synopsis}</p>
+                            <a class="trailer-link" href="${trailerURL}" target="_blank">Ver Tráiler</a>
+                            <button class="edit-button">Editar</button>
+                        `;
+              // Agregar evento para editar la tarjeta
+              animeCard.querySelector('.edit-button').addEventListener('click', function() {
+                fillEditForm(animeCard); // Llenar el formulario con los detalles de la tarjeta
+              });
+              privateAnimeSection.appendChild(animeCard);
+            }
+            // Limpiar el formulario después de publicar
+            publishForm.reset();
+            publishSection.style.display = 'none'; // Ocultar sección de publicación
+          };
+          // Leer la imagen
+          if (animeImage) {
+            reader.readAsDataURL(animeImage);
+          } else {
+            reader.onload(); // Si no hay imagen, llamamos directamente a onload
+          }
+        });
+        // Función para llenar el formulario de edición
+        function fillEditForm(card) {
+          currentEditCard = card; // Guardamos la tarjeta actualmente en edición
+          document.getElementById('animeName').value = card.querySelector('h3').innerText.split(' (')[0]; // Extraer el nombre
+          const genres = card.querySelector('p:nth-of-type(1)').innerText.replace('Géneros:', '').trim().split(', ');
+          const genresSelect = document.getElementById('genres');
+          Array.from(genresSelect.options).forEach(option => {
+            option.selected = genres.includes(option.value);
+          });
+          document.getElementById('seasons').value = card.querySelector('p:nth-of-type(2)').innerText.replace('Temporadas:', '').trim();
+          document.getElementById('episodes').value = card.querySelector('p:nth-of-type(3)').innerText.replace('Episodios:', '').trim();
+          document.getElementById('trailerURL').value = card.querySelector('.trailer-link').href;
+          document.getElementById('synopsis').value = card.querySelector('p:nth-of-type(6)').innerText.replace('Sinopsis:', '').trim();
+          document.getElementById('year').value = card.querySelector('h3').innerText.split('(')[1].split(')')[0].trim(); // Extraer el año
+          document.getElementById('rating').value = card.querySelector('p:nth-of-type(4)').innerText.replace('Valoración:', '').trim().split(' ')[0]; // Valoración
+          document.getElementById('status').value = card.querySelector('p:nth-of-type(5)').innerText.replace('Estado:', '').trim().toLowerCase().replace(' ', '_'); // Estado
+          publishSection.style.display = 'block'; // Mostrar la sección de publicación
+        }
+        showPublishSection(); // Mostrar sección de publicar anime al cargar
+      });
+    </script>
+  </body>
+
+  </html>
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar Cómics Privados</title>
+    <style>
+      .comic-container {
+        font-family: 'Arial', sans-serif;
+        background-color: #141414;
+        color: #fff;
+        width: 100%;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      }
+
+      .comic-container h1,
+      .comic-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .comic-form-group {
+        margin-bottom: 15px;
+      }
+
+      .comic-form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .comic-form-group input,
+      .comic-form-group textarea,
+      .comic-container button {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+
+      .comic-container button {
+        background-color: #e50914;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .comic-container button:hover {
+        background-color: #f40612;
+      }
+
+      .comic-preview-section {
+        margin-top: 30px;
+      }
+
+      .comic-preview-cover img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+      }
+
+      .comic-preview-details {
+        margin-top: 20px;
+        line-height: 1.6;
+      }
+
+      .chapter-container {
+        margin-top: 20px;
+      }
+
+      .chapter-preview {
+        margin-top: 15px;
+      }
+
+      .chapter-preview img {
+        max-width: 100px;
+        height: auto;
+        margin-right: 10px;
+        border-radius: 5px;
+      }
+
+      /* Estilos para la lectura de capítulos */
+      .chapter-reader {
+        margin-top: 30px;
+      }
+
+      .chapter-reader img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      .chapter-navigation {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .chapter-navigation button {
+        padding: 10px;
+        background-color: #e50914;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .chapter-navigation button:disabled {
+        background-color: #555;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="comic-container">
+      <h1>Publicar Cómic Privado</h1>
+
+      <form id="comicForm">
+        <div class="comic-form-group">
+          <label for="title">Título del cómic:</label>
+          <input type="text" id="title" required>
+        </div>
+
+        <div class="comic-form-group">
+          <label for="author">Autor:</label>
+          <input type="text" id="author" required>
+        </div>
+
+        <div class="comic-form-group">
+          <label for="year">Año de publicación:</label>
+          <input type="number" id="year" min="1900" max="2024" required>
+        </div>
+
+        <div class="comic-form-group">
+          <label for="pages">Número de páginas:</label>
+          <input type="number" id="pages" min="1" required>
+        </div>
+
+        <div class="comic-form-group">
+          <label for="synopsis">Sinopsis:</label>
+          <textarea id="synopsis" rows="5" required></textarea>
+        </div>
+
+        <div class="comic-form-group">
+          <label for="cover">Portada del cómic:</label>
+          <input type="file" id="cover" accept="image/*" required>
+        </div>
+
+        <div class="comic-form-group">
+          <label for="chapterCount">Número de capítulos:</label>
+          <input type="number" id="chapterCount" min="1" required>
+        </div>
+
+        <div id="chapters" class="chapter-container"></div>
+
+        <button type="submit">Publicar Cómic</button>
+      </form>
+
+      <div id="comicPreview" class="comic-preview-section" style="display:none;">
+        <h2>Vista previa del cómic</h2>
+        <div id="previewCover" class="comic-preview-cover"></div>
+        <div id="previewDetails" class="comic-preview-details"></div>
+        <div id="chapterList"></div>
+      </div>
+
+      <div id="chapterReader" class="chapter-reader" style="display:none;">
+        <h2>Capítulo <span id="currentChapterNumber"></span></h2>
+        <div id="chapterImages"></div>
+        <div class="chapter-navigation">
+          <button id="prevChapter" disabled>Capítulo Anterior</button>
+          <button id="nextChapter">Siguiente Capítulo</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let chapterImages = []; // Almacena las imágenes de todos los capítulos
+      let currentChapter = 0; // Para el control de capítulos durante la lectura
+      // Manejo de la cantidad de capítulos e imágenes por capítulo
+      const chapterCountInput = document.getElementById('chapterCount');
+      const chaptersContainer = document.getElementById('chapters');
+      chapterCountInput.addEventListener('input', function() {
+        const count = parseInt(this.value);
+        chaptersContainer.innerHTML = '';
+        for (let i = 0; i < count; i++) {
+          const chapterGroup = document.createElement('div');
+          chapterGroup.classList.add('comic-form-group');
+          chapterGroup.innerHTML = `
+                    <label for="chapter${i + 1}">Capítulo ${i + 1} (subir imágenes):</label>
+                    <input type="file" id="chapter${i + 1}" accept="image/*" multiple required>
+                `;
+          chaptersContainer.appendChild(chapterGroup);
+          document.getElementById(`chapter${i + 1}`).addEventListener('change', function() {
+            const files = this.files;
+            if (!chapterImages[i]) chapterImages[i] = [];
+            for (const file of files) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                chapterImages[i].push(e.target.result);
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+        }
+      });
+      // Función de envío del formulario
+      document.getElementById('comicForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Ocultar el formulario y mostrar la vista previa
+        document.getElementById('comicForm').style.display = 'none';
+        document.getElementById('comicPreview').style.display = 'block';
+        // Obtener los valores ingresados
+        const title = document.getElementById('title').value;
+        const author = document.getElementById('author').value;
+        const year = document.getElementById('year').value;
+        const pages = document.getElementById('pages').value;
+        const synopsis = document.getElementById('synopsis').value;
+        const coverFile = document.getElementById('cover').files[0];
+        // Mostrar vista previa de la portada
+        const previewCover = document.getElementById('previewCover');
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewCover.innerHTML = `<img src="${e.target.result}" alt="Portada del cómic">`;
+        };
+        reader.readAsDataURL(coverFile);
+        // Mostrar detalles del cómic
+        const previewDetails = document.getElementById('previewDetails');
+        previewDetails.innerHTML = `
+                <h3>${title}</h3>
+                <p><strong>Autor:</strong> ${author}</p>
+                <p><strong>Año de publicación:</strong> ${year}</p>
+                <p><strong>Número de páginas:</strong> ${pages}</p>
+                <p><strong>Sinopsis:</strong> ${synopsis}</p>
+            `;
+        // Mostrar la lista de capítulos para seleccionar
+        const chapterList = document.getElementById('chapterList');
+        chapterList.innerHTML = '<h3>Capítulos</h3>';
+        chapterImages.forEach((_, index) => {
+          const chapterButton = document.createElement('button');
+          chapterButton.textContent = `Capítulo ${index + 1}`;
+          chapterButton.addEventListener('click', () => {
+            openChapter(index);
+          });
+          chapterList.appendChild(chapterButton);
+        });
+      });
+      // Función para abrir y leer un capítulo
+      function openChapter(index) {
+        currentChapter = index;
+        document.getElementById('comicPreview').style.display = 'none';
+        document.getElementById('chapterReader').style.display = 'block';
+        document.getElementById('currentChapterNumber').textContent = currentChapter + 1;
+        const chapterImagesContainer = document.getElementById('chapterImages');
+        chapterImagesContainer.innerHTML = ''; // Limpiar imágenes anteriores
+        chapterImages[currentChapter].forEach(imgSrc => {
+          const img = document.createElement('img');
+          img.src = imgSrc;
+          chapterImagesContainer.appendChild(img);
+        });
+        // Manejar botones de navegación
+        document.getElementById('prevChapter').disabled = currentChapter === 0;
+        document.getElementById('nextChapter').disabled = currentChapter === chapterImages.length - 1;
+      }
+      // Navegación entre capítulos
+      document.getElementById('prevChapter').addEventListener('click', () => {
+        if (currentChapter > 0) openChapter(currentChapter - 1);
+      });
+      document.getElementById('nextChapter').addEventListener('click', () => {
+        if (currentChapter < chapterImages.length - 1) openChapter(currentChapter + 1);
+      });
+    </script>
+  </body>
+
+  </html>
+  <!-- Comienzo de la función de noticias de anime -->
+  <div id="anime-news-section" style="margin: 20px; padding: 20px; background-color: #1a1a1a; border-radius: 8px; box-shadow: 0 0 15px rgba(255, 165, 0, 0.5);">
+    <h2 style="color: #ff4500; text-align: center;">Publicar Noticia de Anime</h2>
+    <form id="news-form" style="display: flex; flex-direction: column; gap: 10px;">
+      <label for="news-title" style="color: #ff4500;">Nombre de la noticia</label>
+      <input type="text" id="news-title" style="padding: 10px; border-radius: 5px; border: none; background-color: #333; color: #fff;" required>
+
+      <label for="news-date" style="color: #ff4500;">Fecha de la noticia</label>
+      <input type="date" id="news-date" style="padding: 10px; border-radius: 5px; border: none; background-color: #333; color: #fff;" required>
+
+      <label for="news-content" style="color: #ff4500;">Contenido de la noticia</label>
+      <textarea id="news-content" rows="4" style="padding: 10px; border-radius: 5px; border: none; background-color: #333; color: #fff;" required></textarea>
+
+      <label for="news-author" style="color: #ff4500;">Autor de la noticia</label>
+      <input type="text" id="news-author" style="padding: 10px; border-radius: 5px; border: none; background-color: #333; color: #fff;" required>
+
+      <button type="submit" style="background-color: #ff4500; color: #fff; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">Publicar</button>
+    </form>
+  </div>
+
+  <div id="news-feed" style="margin-top: 20px;"></div>
+
+  <script>
+    document.getElementById('news-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      // Obtener los valores del formulario
+      const title = document.getElementById('news-title').value;
+      const date = document.getElementById('news-date').value;
+      const content = document.getElementById('news-content').value;
+      const author = document.getElementById('news-author').value;
+      // Crear un nuevo elemento de noticia
+      const newsFeed = document.getElementById('news-feed');
+      const newsItem = document.createElement('div');
+      newsItem.style.backgroundColor = '#2a2a2a';
+      newsItem.style.padding = '15px';
+      newsItem.style.borderRadius = '5px';
+      newsItem.style.marginBottom = '10px';
+      newsItem.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
+      // Rellenar el contenido de la noticia
+      newsItem.innerHTML = `
+            <h3 style="color: #ff4500; margin: 0;">${title}</h3>
+            <p style="color: #aaa; margin: 5px 0;">Fecha: ${date}</p>
+            <p style="color: #f0f0f0; margin: 5px 0;">${content}</p>
+            <p style="color: #aaa; margin: 5px 0;">Autor: ${author}</p>
+        `;
+      // Agregar la noticia al feed
+      newsFeed.prepend(newsItem);
+      // Limpiar el formulario
+      document.getElementById('news-form').reset();
+    });
+  </script>
+  <!-- Fin de la función de noticias de anime -->
+<!-- partial -->
+  <script src='https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js'></script>
+<script src='https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js'></script>
+<script src='https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js%0A'></script><script  src="./script.js"></script>
+
+</body>
+</html>
