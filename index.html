@@ -511,7 +511,7 @@
 
       /* Espaciado para compensar el header fijo */
       .main-content {
-        padding-top: 70px;
+        padding-top: 20px;
         padding-bottom: 80px;
         padding-left: 0;
         padding-right: 0;
@@ -982,16 +982,7 @@
   </head>
 
   <body>
-    <header>
-      <div class="logo" style="display: flex; align-items: center;">
-        <!-- Flex para centrar verticalmente -->
-        <img src="https://cdn-icons-png.flaticon.com/512/9093/9093989.png" alt="Logo" style="width: 48px; height: 48px; margin-right: 8px;"> <!-- Tamaño del ícono ajustado a 48px -->
-        <span style="font-size: 24px; font-weight: bold; color: #FF9900;"></span> <!-- Tamaño del texto ajustado -->
-      </div>
-      <div class="search-bar">
-        <input type="text" class="search-input" id="search-input" placeholder="Buscar anime...">
-        <img src="https://cdn-icons-png.flaticon.com/512/122/122932.png" alt="Buscar" class="search-icon" onclick="searchAnime()">
-      </div>
+    <header style="display: none;">
     </header>
     <div class="main-content">
     <!-- Sección de Inicio -->
@@ -1121,9 +1112,28 @@
         <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="Perfiles">
         <span>Perfiles</span>
       </div>
+      <div class="nav-item" onclick="showSearchModal()">
+        <img src="https://cdn-icons-png.flaticon.com/512/122/122932.png" alt="Buscar">
+        <span>Buscar</span>
+      </div>
       <div class="nav-item" onclick="showSection('ajustes')">
         <img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" alt="Ajustes">
         <span>Ajustes</span>
+      </div>
+    </div>
+
+    <!-- Modal de búsqueda -->
+    <div id="search-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeSearchModal()">&times;</span>
+        <h2 style="color: #FF9900; margin-bottom: 20px;">Buscar Anime</h2>
+        <div style="margin-bottom: 20px;">
+          <input type="text" id="search-input-modal" placeholder="Buscar anime..." style="width: 100%; padding: 12px; border: 1px solid #444; border-radius: 8px; background-color: #333; color: #FFF; font-size: 16px;">
+        </div>
+        <button onclick="searchAnimeFromModal()" style="width: 100%; padding: 12px; background-color: #FF9900; color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">Buscar</button>
+        <div id="search-results" style="margin-top: 20px; max-height: 300px; overflow-y: auto;">
+          <!-- Aquí se mostrarán los resultados de búsqueda -->
+        </div>
       </div>
     </div>
 

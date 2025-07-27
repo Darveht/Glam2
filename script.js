@@ -527,6 +527,69 @@ function searchAnime() {
   }
 }
 
+// Funciones para el modal de búsqueda
+function showSearchModal() {
+  document.getElementById("search-modal").style.display = "flex";
+  document.getElementById("search-input-modal").focus();
+}
+
+function closeSearchModal() {
+  document.getElementById("search-modal").style.display = "none";
+  document.getElementById("search-input-modal").value = "";
+  document.getElementById("search-results").innerHTML = "";
+}
+
+function searchAnimeFromModal() {
+  const input = document.getElementById("search-input-modal").value.toLowerCase();
+  const resultsContainer = document.getElementById("search-results");
+  
+  if (input.trim() === "") {
+    resultsContainer.innerHTML = "<p style='color: #999; text-align: center;'>Ingresa un término de búsqueda</p>";
+    return;
+  }
+  
+  const allAnimes = Object.values(animes).flat();
+  const results = allAnimes.filter((anime) =>
+    anime.title.toLowerCase().includes(input)
+  );
+
+  if (results.length > 0) {
+    resultsContainer.innerHTML = "";
+    results.forEach(anime => {
+      const resultItem = document.createElement("div");
+      resultItem.style.cssText = `
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #333;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      `;
+      
+      resultItem.innerHTML = `
+        <img src="${anime.imageUrl}" alt="${anime.title}" style="width: 50px; height: 75px; object-fit: cover; border-radius: 4px; margin-right: 15px;">
+        <div>
+          <h4 style="color: #FF9900; margin: 0 0 5px 0; font-size: 14px;">${anime.title}</h4>
+          <p style="color: #CCC; margin: 0; font-size: 12px;">Año: ${anime.year}</p>
+        </div>
+      `;
+      
+      resultItem.onmouseover = () => resultItem.style.backgroundColor = "#444";
+      resultItem.onmouseout = () => resultItem.style.backgroundColor = "#333";
+      resultItem.onclick = () => {
+        closeSearchModal();
+        showModal(anime.title, anime.description, anime.year);
+      };
+      
+      resultsContainer.appendChild(resultItem);
+    });
+  } else {
+    resultsContainer.innerHTML = "<p style='color: #999; text-align: center;'>No se encontraron resultados</p>";
+  }
+}
+
 function moveCarousel(carouselId, direction) {
   const carousel = document.getElementById(carouselId);
   carousel.scrollBy({
