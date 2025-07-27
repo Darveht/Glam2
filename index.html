@@ -494,9 +494,22 @@
         padding: 10px 20px;
         background-color: #232F3E;
         /* Color de fondo oscuro, similar a Amazon */
-        position: sticky;
+        position: fixed;
         top: 0;
+        left: 0;
+        right: 0;
         z-index: 1000;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      header.hidden {
+        transform: translateY(-100%);
+      }
+
+      /* Espaciado para compensar el header fijo */
+      body {
+        padding-top: 70px;
+        padding-bottom: 80px;
       }
 
       /* Logo estilo Amazon */
@@ -736,6 +749,61 @@
           opacity: 0;
         }
       }
+
+      /* Barra de navegación inferior */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #232F3E;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 0;
+        border-top: 1px solid #444;
+        z-index: 1000;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #FFFFFF;
+        text-decoration: none;
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 8px;
+        transition: background-color 0.3s, color 0.3s;
+        cursor: pointer;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        background-color: #FF9900;
+        color: #232F3E;
+      }
+
+      .nav-item img {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 3px;
+        filter: brightness(0) invert(1);
+      }
+
+      .nav-item:hover img,
+      .nav-item.active img {
+        filter: brightness(0) invert(0);
+      }
+
+      /* Ocultar secciones por defecto */
+      .section {
+        display: none;
+      }
+
+      .section.active {
+        display: block;
+      }
     </style>
   </head>
 
@@ -752,37 +820,148 @@
         <img src="https://cdn-icons-png.flaticon.com/512/262/262569.png" alt="Ajustes" class="settings-icon" onclick="showSettings()">
       </div>
     </header>
-    <div class="banner">
-      <img src="https://i.pinimg.com/736x/5b/34/9d/5b349debdf10887275e73c3819631cea.jpg" alt="Gintama" class="banner-image">
-      <div class="banner-content">
-        <div class="banner-title">Demon Slayer: Kimetsu no Yaiba</div>
-        <div class="banner-description">Después de encontrar a su familia asesinada, Tanjiro empieza una lucha contra los demonios que convirtieron a su hermana en una de ellos.</div>
-        <div class="banner-buttons">
-          <button class="banner-button" onclick="showModal('Anime Destacado', 'Después de encontrar a su familia asesinada, Tanjiro empieza una lucha contra los demonios que convirtieron a su hermana en una de ellos.', '2019')">Ver Detalles</button>
-          <button class="banner-button" onclick="addToList('Anime Destacado')">Añadir a Lista</button>
+    <!-- Sección de Inicio -->
+    <div id="inicio-section" class="section active">
+      <div class="banner">
+        <img src="https://i.pinimg.com/736x/5b/34/9d/5b349debdf10887275e73c3819631cea.jpg" alt="Gintama" class="banner-image">
+        <div class="banner-content">
+          <div class="banner-title">Demon Slayer: Kimetsu no Yaiba</div>
+          <div class="banner-description">Después de encontrar a su familia asesinada, Tanjiro empieza una lucha contra los demonios que convirtieron a su hermana en una de ellos.</div>
+          <div class="banner-buttons">
+            <button class="banner-button" onclick="showModal('Anime Destacado', 'Después de encontrar a su familia asesinada, Tanjiro empieza una lucha contra los demonios que convirtieron a su hermana en una de ellos.', '2019')">Ver Detalles</button>
+            <button class="banner-button" onclick="addToList('Anime Destacado')">Añadir a Lista</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carruseles de animes -->
+      <div class="carousel-container">
+        <div class="carousel-title"> Emisión</div>
+        <div class="carousel" id="carousel-emision"></div>
+      </div>
+
+      <div class="carousel-container">
+        <div class="carousel-title">Mas Recomendados</div>
+        <div class="carousel" id="carousel-recomendados"></div>
+      </div>
+
+      <div class="carousel-container">
+        <div class="carousel-title">Los mas Populares</div>
+        <div class="carousel" id="carousel-populares"></div>
+      </div>
+
+      <div class="carousel-container">
+        <div class="carousel-title"> Más Vistas</div>
+        <div class="carousel" id="carousel-vistos"></div>
+      </div>
+    </div>
+
+    <!-- Sección de Cómics -->
+    <div id="comics-section" class="section">
+      <div style="text-align: center; padding: 50px 20px;">
+        <h2 style="color: #FF9900; font-size: 32px; margin-bottom: 20px;">Cómics</h2>
+        <p style="color: #FFFFFF; font-size: 18px; margin-bottom: 30px;">Explora nuestra colección de cómics y manhwas</p>
+        
+        <!-- Aquí se incluirá el contenido de cómics existente -->
+        <div class="comic-container">
+          <h1>Publicar Cómic Privado</h1>
+          <form id="comicForm">
+            <div class="comic-form-group">
+              <label for="title">Título del cómic:</label>
+              <input type="text" id="title" required>
+            </div>
+            <div class="comic-form-group">
+              <label for="author">Autor:</label>
+              <input type="text" id="author" required>
+            </div>
+            <div class="comic-form-group">
+              <label for="year">Año de publicación:</label>
+              <input type="number" id="year" min="1900" max="2024" required>
+            </div>
+            <button type="submit">Publicar Cómic</button>
+          </form>
+          <div id="comicPreview" class="comic-preview-section" style="display:none;">
+            <h2>Vista previa del cómic</h2>
+            <div id="previewCover" class="comic-preview-cover"></div>
+            <div id="previewDetails" class="comic-preview-details"></div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Carruseles de animes -->
-    <div class="carousel-container">
-      <div class="carousel-title"> Emisión</div>
-      <div class="carousel" id="carousel-emision"></div>
+    <!-- Sección de Perfiles -->
+    <div id="perfiles-section" class="section">
+      <div style="text-align: center; padding: 50px 20px;">
+        <h2 style="color: #FF9900; font-size: 32px; margin-bottom: 20px;">Perfiles</h2>
+        <p style="color: #FFFFFF; font-size: 18px; margin-bottom: 30px;">Conecta con otros usuarios y administradores</p>
+        
+        <!-- Contenido de administradores existente -->
+        <div class="section-title">
+          <h2>Administradores Oficiales</h2>
+        </div>
+        <div class="admin-container">
+          <div class="admin-card">
+            <img src="https://m.media-amazon.com/images/S/pv-target-images/80d21af2c4f9fb94460aadf6f0d73b52e91a18d1c9de0fe09e69ac8034a809e9._SX300_.jpg" alt="Administrador 1">
+            <div>
+              <h3>Darel Vega <img src="https://cdn-icons-png.freepik.com/256/16740/16740084.png?semt=ais_hybrid" alt="Verificado"></h3>
+              <p>De: HT, Estados Unidos</p>
+              <p>Rol: Fundador de Vetplex</p>
+              <p>Estado: <span class="circuit inactive"></span> Inactivo</p>
+              <p>Seguidores: 21.2mil</p>
+              <button class="chat-button">Chatear</button>
+              <button class="follow-button" onclick="followUser(this)">Seguir</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="carousel-container">
-      <div class="carousel-title">Mas Recomendados</div>
-      <div class="carousel" id="carousel-recomendados"></div>
+    <!-- Sección de Ajustes -->
+    <div id="ajustes-section" class="section">
+      <div style="text-align: center; padding: 50px 20px;">
+        <h2 style="color: #FF9900; font-size: 32px; margin-bottom: 20px;">Ajustes</h2>
+        <p style="color: #FFFFFF; font-size: 18px; margin-bottom: 30px;">Configura tu experiencia en VetPlex</p>
+        
+        <div style="background-color: #333; padding: 30px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
+          <h3 style="color: #FF9900;">Información de la Aplicación</h3>
+          <p style="color: #CCCCCC;">Versión: 2.0</p>
+          <p style="color: #CCCCCC;">Desarrollado por: VetPlex Team</p>
+          
+          <h3 style="color: #FF9900; margin-top: 30px;">Configuraciones</h3>
+          <div style="text-align: left; margin: 20px 0;">
+            <label style="color: #FFFFFF;">
+              <input type="checkbox" style="margin-right: 10px;"> Notificaciones push
+            </label>
+          </div>
+          <div style="text-align: left; margin: 20px 0;">
+            <label style="color: #FFFFFF;">
+              <input type="checkbox" style="margin-right: 10px;"> Reproducción automática
+            </label>
+          </div>
+          
+          <button style="background-color: #FF9900; color: #232F3E; padding: 10px 20px; border: none; border-radius: 5px; margin-top: 20px; cursor: pointer;">Guardar Configuración</button>
+        </div>
+      </div>
     </div>
 
-    <div class="carousel-container">
-      <div class="carousel-title">Los mas Populares</div>
-      <div class="carousel" id="carousel-populares"></div>
-    </div>
-
-    <div class="carousel-container">
-      <div class="carousel-title"> Más Vistas</div>
-      <div class="carousel" id="carousel-vistos"></div>
+    <!-- Barra de navegación inferior -->
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="showSection('inicio')">
+        <img src="https://cdn-icons-png.flaticon.com/512/1946/1946488.png" alt="Inicio">
+        <span>Inicio</span>
+      </div>
+      <div class="nav-item" onclick="showSection('comics')">
+        <img src="https://cdn-icons-png.flaticon.com/512/3145/3145765.png" alt="Cómics">
+        <span>Cómics</span>
+      </div>
+      <div class="nav-item" onclick="showSection('perfiles')">
+        <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="Perfiles">
+        <span>Perfiles</span>
+      </div>
+      <div class="nav-item" onclick="showSection('ajustes')">
+        <img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" alt="Ajustes">
+        <span>Ajustes</span>
+      </div>
     </div>
 
     <!-- Modal de ajustes -->

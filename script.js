@@ -399,6 +399,24 @@ document.addEventListener("DOMContentLoaded", () => {
   populateCarousel("carousel-recomendados", animes.recomendados);
   populateCarousel("carousel-populares", animes.populares);
   populateCarousel("carousel-vistos", animes.vistos);
+  
+  // Funcionalidad de scroll para ocultar/mostrar header
+  let lastScrollTop = 0;
+  const header = document.querySelector('header');
+  
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (scrollTop > lastScrollTop && scrollTop > 100) {
+      // Scrolling down - hide header
+      header.classList.add('hidden');
+    } else {
+      // Scrolling up - show header
+      header.classList.remove('hidden');
+    }
+    
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+  });
 });
 
 function populateCarousel(carouselId, animeList) {
@@ -465,6 +483,39 @@ function moveCarousel(carouselId, direction) {
     top: 0,
     left: direction * 200, // Ajusta el número para cambiar la cantidad de desplazamiento
     behavior: "smooth"
+  });
+}
+
+// Función para cambiar entre secciones
+function showSection(sectionName) {
+  // Ocultar todas las secciones
+  const sections = document.querySelectorAll('.section');
+  sections.forEach(section => {
+    section.classList.remove('active');
+  });
+  
+  // Remover clase active de todos los nav-items
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  // Mostrar la sección seleccionada
+  const targetSection = document.getElementById(sectionName + '-section');
+  if (targetSection) {
+    targetSection.classList.add('active');
+  }
+  
+  // Agregar clase active al nav-item correspondiente
+  const activeNavItem = document.querySelector(`.nav-item[onclick="showSection('${sectionName}')"]`);
+  if (activeNavItem) {
+    activeNavItem.classList.add('active');
+  }
+  
+  // Scroll al top cuando se cambia de sección
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
   });
 }
 
