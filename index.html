@@ -513,6 +513,8 @@
       .main-content {
         padding-top: 70px;
         padding-bottom: 80px;
+        padding-left: 0;
+        padding-right: 0;
       }
 
       /* Logo estilo Amazon */
@@ -599,20 +601,58 @@
 
       
 
+      .carousel-container {
+        margin: 20px 0;
+        padding: 0;
+      }
+
+      .carousel-title {
+        color: #FFFFFF;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 15px 20px;
+        padding: 0;
+      }
+
       .carousel {
         display: flex;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
+        padding: 0 20px;
+        gap: 15px;
       }
 
       .carousel-item {
         min-width: 150px;
-        margin-right: 10px;
         background-color: #333;
-        padding: 10px;
-        border-radius: 4px;
+        border-radius: 8px;
         scroll-snap-align: start;
+        flex-shrink: 0;
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .carousel-item:hover {
+        transform: scale(1.05);
+      }
+
+      .carousel-item img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .item-details {
+        padding: 10px;
+        color: #FFFFFF;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 0 0 8px 8px;
       }
 
       html,
@@ -745,7 +785,6 @@
       <div class="search-bar">
         <input type="text" class="search-input" id="search-input" placeholder="Buscar anime...">
         <img src="https://cdn-icons-png.flaticon.com/512/122/122932.png" alt="Buscar" class="search-icon" onclick="searchAnime()">
-        <img src="https://cdn-icons-png.flaticon.com/512/262/262569.png" alt="Ajustes" class="settings-icon" onclick="showSettings()">
       </div>
     </header>
     <div class="main-content">
