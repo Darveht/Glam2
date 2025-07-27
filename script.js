@@ -421,17 +421,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function populateCarousel(carouselId, animeList) {
   const carousel = document.getElementById(carouselId);
-  animeList.forEach((anime) => {
+  const container = carousel.parentElement;
+  
+  // Limpiar carrusel existente
+  carousel.innerHTML = '';
+  
+  animeList.forEach((anime, index) => {
     const item = document.createElement("div");
     item.classList.add("carousel-item");
+    
+    // Determinar badge de calidad y estado
+    let qualityBadge = '';
+    let statusBadge = '';
+    
+    if (anime.year >= 2024) {
+      qualityBadge = '<div class="quality-badge">Nuevo</div>';
+    } else if (anime.year >= 2020) {
+      qualityBadge = '<div class="quality-badge">HD</div>';
+    }
+    
+    // Badge de estado basado en el carrusel
+    if (carouselId.includes('emision')) {
+      statusBadge = '<div class="status-badge ongoing">En Emisión</div>';
+    } else if (carouselId.includes('populares')) {
+      statusBadge = '<div class="status-badge completed">Completo</div>';
+    }
+    
     item.innerHTML = `
-            <img src="${anime.imageUrl}" alt="${anime.title}">
+            ${qualityBadge}
+            ${statusBadge}
+            <img src="${anime.imageUrl}" alt="${anime.title}" loading="lazy">
             <div class="item-details">
                 ${anime.title}
+                <div style="font-size: 12px; color: #999; margin-top: 4px;">${anime.year}</div>
             </div>
         `;
     item.onclick = () => showModal(anime.title, anime.description, anime.year);
     carousel.appendChild(item);
+  });
+  
+  // Agregar botones de navegación si no existen
+  if (!container.querySelector('.carousel-nav')) {
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'carousel-nav prev';
+    prevBtn.innerHTML = '❮';
+    prevBtn.onclick = () => scrollCarousel(carouselId, -200);
+    
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'carousel-nav next';
+    nextBtn.innerHTML = '❯';
+    nextBtn.onclick = () => scrollCarousel(carouselId, 200);
+    
+    container.appendChild(prevBtn);
+    container.appendChild(nextBtn);
+  }
+}
+
+function scrollCarousel(carouselId, amount) {
+  const carousel = document.getElementById(carouselId);
+  carousel.scrollBy({
+    left: amount,
+    behavior: 'smooth'
   });
 }
 
