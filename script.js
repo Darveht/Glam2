@@ -411,6 +411,49 @@ document.addEventListener("DOMContentLoaded", () => {
       // Scrolling down - hide header
       header.classList.add('hidden');
     } else {
+
+
+// Funcionalidad para la sección de cómics
+document.addEventListener('DOMContentLoaded', function() {
+  const comicForm = document.getElementById('comicForm');
+  const comicsContainer = document.getElementById('comicsContainer');
+  
+  if (comicForm) {
+    comicForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const title = document.getElementById('comic-title').value;
+      const author = document.getElementById('comic-author').value;
+      const year = document.getElementById('comic-year').value;
+      const synopsis = document.getElementById('comic-synopsis').value;
+      
+      // Crear elemento del cómic
+      const comicElement = document.createElement('div');
+      comicElement.style.cssText = `
+        background-color: #444;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: left;
+        border: 1px solid #555;
+      `;
+      
+      comicElement.innerHTML = `
+        <h4 style="color: #FF9900; margin: 0 0 10px 0;">${title}</h4>
+        <p style="color: #CCCCCC; margin: 5px 0; font-size: 14px;"><strong>Autor:</strong> ${author}</p>
+        <p style="color: #CCCCCC; margin: 5px 0; font-size: 14px;"><strong>Año:</strong> ${year}</p>
+        <p style="color: #CCCCCC; margin: 10px 0; font-size: 14px;"><strong>Sinopsis:</strong> ${synopsis}</p>
+        <button style="background-color: #FF9900; color: #000; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; margin-top: 10px;">Leer Cómic</button>
+      `;
+      
+      comicsContainer.appendChild(comicElement);
+      comicForm.reset();
+      
+      // Mensaje de confirmación
+      alert('¡Cómic publicado exitosamente!');
+    });
+  }
+});
+
       // Scrolling up - show header
       header.classList.remove('hidden');
     }
