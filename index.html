@@ -489,24 +489,19 @@
         /* Fondo ligeramente más oscuro al pasar el mouse */
       }
 
-      /* Encabezado estilo Amazon */
+      /* Encabezado estilo Amazon - siempre visible */
       header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 20px;
+        padding: 12px 20px;
         background-color: #232F3E;
-        /* Color de fondo oscuro, similar a Amazon */
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         z-index: 1000;
-        transition: transform 0.3s ease-in-out;
-      }
-
-      header.hidden {
-        transform: translateY(-100%);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
       }
 
       /* Espaciado para compensar el header fijo */
@@ -1352,6 +1347,23 @@
         <h2 style="color: #FF9900; font-size: 32px; margin-bottom: 20px;">Cómics</h2>
         <p style="color: #FFFFFF; font-size: 18px; margin-bottom: 30px;">Explora nuestra colección de cómics y manhwas</p>
         
+        <!-- Barra de búsqueda específica para cómics -->
+        <div style="max-width: 600px; margin: 0 auto 30px auto; display: flex; background-color: #FFFFFF; border-radius: 6px; overflow: hidden; border: 2px solid #FF9900;">
+          <input type="text" id="comic-search-input" placeholder="Buscar cómics, manhwas..." 
+                 style="flex: 1; padding: 12px 16px; border: none; outline: none; font-size: 16px; color: #0F1111; background: transparent; font-family: Arial, sans-serif;">
+          <button onclick="searchComics()" style="padding: 12px 16px; background-color: #FEBD69; border: none; cursor: pointer; color: #0F1111; display: flex; align-items: center; justify-content: center; width: 50px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23.384 21.619l-6.529-6.529c1.378-1.611 2.145-3.669 2.145-5.803C19 4.141 14.859 0 9.713 0S.426 4.141.426 9.287s4.141 9.287 9.287 9.287c2.134 0 4.192-.767 5.803-2.145l6.529 6.529 1.339-1.339zM2.426 9.287c0-4.025 3.262-7.287 7.287-7.287s7.287 3.262 7.287 7.287-3.262 7.287-7.287 7.287-7.287-3.262-7.287-7.287z"/>
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Resultados de búsqueda de cómics -->
+        <div id="comic-search-results" style="display: none; max-width: 800px; margin: 0 auto 30px auto; background-color: #333; border-radius: 10px; padding: 20px;">
+          <h3 style="color: #FF9900; margin-bottom: 15px;">Resultados de búsqueda</h3>
+          <div id="comic-results-container"></div>
+        </div>
+        
         <!-- Contenido específico de cómics -->
         <div style="background-color: #333; padding: 30px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
           <h3 style="color: #FF9900;">Publicar Cómic Privado</h3>
@@ -1455,6 +1467,21 @@
     </div>
 
     </div>
+
+    <!-- Header fijo con barra de búsqueda -->
+    <header>
+      <div class="logo">Glam</div>
+      <div class="search-bar">
+        <input type="text" class="search-input" id="main-search-input" placeholder="Buscar animes...">
+        <svg class="search-icon" onclick="searchFromHeader()" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.384 21.619l-6.529-6.529c1.378-1.611 2.145-3.669 2.145-5.803C19 4.141 14.859 0 9.713 0S.426 4.141.426 9.287s4.141 9.287 9.287 9.287c2.134 0 4.192-.767 5.803-2.145l6.529 6.529 1.339-1.339zM2.426 9.287c0-4.025 3.262-7.287 7.287-7.287s7.287 3.262 7.287 7.287-3.262 7.287-7.287 7.287-7.287-3.262-7.287-7.287z"/>
+        </svg>
+      </div>
+      <svg class="settings-icon" onclick="showSettings()" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0zm12-1.5a1.5 1.5 0 0 1-1.5 1.5h-1.086a6.5 6.5 0 0 1-.465 1.123l.768.768a1.5 1.5 0 0 1-2.122 2.122l-.768-.768A6.5 6.5 0 0 1 13.5 15.586V16.5a1.5 1.5 0 0 1-3 0v-1.086a6.5 6.5 0 0 1-1.123-.465l-.768.768a1.5 1.5 0 0 1-2.122-2.122l.768-.768A6.5 6.5 0 0 1 6.086 11.5H5a1.5 1.5 0 0 1 0-3h1.086a6.5 6.5 0 0 1 .465-1.123l-.768-.768a1.5 1.5 0 1 1 2.122-2.122l.768.768A6.5 6.5 0 0 1 9.5 4.586V3.5a1.5 1.5 0 0 1 3 0v1.086a6.5 6.5 0 0 1 1.123.465l.768-.768a1.5 1.5 0 1 1 2.122 2.122l-.768.768A6.5 6.5 0 0 1 16.414 7.5H17.5a1.5 1.5 0 0 1 0 3z"/>
+      </svg>
+    </header>
+
     <!-- Barra de navegación inferior -->
     <div class="bottom-nav">
       <div class="nav-item active" onclick="showSection('inicio')">
