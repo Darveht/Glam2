@@ -594,7 +594,7 @@
         /* Disminuir la opacidad al pasar el mouse */
       }
 
-      
+
 
       .carousel-container {
         margin: 30px 0;
@@ -1272,7 +1272,7 @@
         }
       }
 
-      
+
 
       /* Responsive */
       @media (max-width: 768px) {
@@ -1322,7 +1322,7 @@
   </head>
 
   <body>
-    
+
     <div class="main-content">
     <!-- Sección de Inicio -->
     <div id="inicio-section" class="section active">
@@ -1348,36 +1348,16 @@
       </div>
     </div>
 
-    
+
 
     <!-- Sección de Perfiles -->
     <div id="perfiles-section" class="section">
-      <div style="text-align: center; padding: 50px 20px;">
-        <h2 style="color: #FF9900; font-size: 32px; margin-bottom: 20px;">Perfiles</h2>
-        <p style="color: #FFFFFF; font-size: 18px; margin-bottom: 30px;">Conecta con otros usuarios y administradores</p>
-        
-        <!-- Contenido específico de perfiles -->
-        <div style="background-color: #333; padding: 30px; border-radius: 10px; max-width: 800px; margin: 0 auto;">
-          <h3 style="color: #FF9900; margin-bottom: 30px;">Administradores Oficiales</h3>
-          
-          <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
-            <!-- Administrador 1 -->
-            <div style="background-color: #444; padding: 20px; border-radius: 10px; width: 250px; text-align: center;">
-              <img src="https://m.media-amazon.com/images/S/pv-target-images/80d21af2c4f9fb94460aadf6f0d73b52e91a18d1c9de0fe09e69ac8034a809e9._SX300_.jpg" alt="Darel Vega" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 15px;">
-              <h4 style="color: #FFFFFF; margin-bottom: 10px;">Darel Vega ✓</h4>
-              <p style="color: #CCCCCC; font-size: 14px; margin: 5px 0;">De: HT, Estados Unidos</p>
-              <p style="color: #CCCCCC; font-size: 14px; margin: 5px 0;">Rol: Fundador de Vetplex</p>
-              <p style="color: #CCCCCC; font-size: 14px; margin: 5px 0;">Estado: <span style="color: red;">●</span> Inactivo</p>
-              <p style="color: #CCCCCC; font-size: 14px; margin: 15px 0;">Seguidores: 21.2k</p>
-              <div style="display: flex; gap: 10px; justify-content: center;">
-                <button style="background-color: #FF9900; color: #000; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">Chatear</button>
-                <button style="background-color: #0066C0; color: #FFF; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">Seguir</button>
-              </div>
-            </div>
-            
-            <!-- Agregar más administradores aquí si es necesario -->
-          </div>
-        </div>
+      <div class="profile-search-container">
+        <input type="text" id="profile-search-input" placeholder="Buscar administradores o usuarios...">
+        <button onclick="searchProfiles()">Buscar</button>
+      </div>
+      <div id="profile-list" class="profile-grid">
+        <!-- Aquí se cargarán los perfiles -->
       </div>
     </div>
 
@@ -1386,7 +1366,7 @@
       <div style="text-align: center; padding: 50px 20px;">
         <h2 style="color: #FF9900; font-size: 32px; margin-bottom: 20px;">Ajustes</h2>
         <p style="color: #FFFFFF; font-size: 18px; margin-bottom: 30px;">Configura tu experiencia en VetPlex</p>
-        
+
         <div style="background-color: #333; padding: 30px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
           <div style="margin-bottom: 30px;">
             <h3 style="color: #FF9900; margin-bottom: 15px;">Información de la Aplicación</h3>
@@ -1394,7 +1374,7 @@
             <p style="color: #CCCCCC; margin: 5px 0;">Desarrollado por: VetPlex Team</p>
             <p style="color: #CCCCCC; margin: 5px 0;">Última actualización: Diciembre 2024</p>
           </div>
-          
+
           <div style="margin-bottom: 30px;">
             <h3 style="color: #FF9900; margin-bottom: 15px;">Configuraciones</h3>
             <div style="text-align: left; margin: 15px 0; padding: 10px; background-color: #444; border-radius: 5px;">
@@ -1413,7 +1393,7 @@
               </label>
             </div>
           </div>
-          
+
           <button style="background-color: #FF9900; color: #232F3E; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%;">Guardar Configuración</button>
         </div>
       </div>
@@ -1441,7 +1421,7 @@
         <img src="https://cdn-icons-png.flaticon.com/512/1946/1946488.png" alt="Inicio">
         <span>Inicio</span>
       </div>
-      
+
       <div class="nav-item" onclick="showSection('perfiles')">
         <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="Perfiles">
         <span>Perfiles</span>
@@ -1478,19 +1458,19 @@
             </svg>
           </button>
         </div>
-        
+
         <div class="search-content">
           <!-- Loader de búsqueda -->
           <div id="search-loader" class="search-loader">
             <div class="loader-spinner"></div>
             <p>Buscando animes...</p>
           </div>
-          
+
           <!-- Resultados de búsqueda -->
           <div id="search-results" class="search-results-container">
             <!-- Los resultados aparecerán aquí -->
           </div>
-          
+
           <!-- Sugerencias cuando no hay búsqueda -->
           <div id="search-suggestions" class="search-suggestions">
             <h3>Búsquedas populares</h3>
@@ -1502,7 +1482,7 @@
               <span class="search-tag" onclick="quickSearch('Death Note')">Death Note</span>
               <span class="search-tag" onclick="quickSearch('My Hero Academia')">My Hero Academia</span>
             </div>
-            
+
             <h3>Géneros populares</h3>
             <div class="genre-searches">
               <span class="search-tag" onclick="quickSearch('acción')">Acción</span>
@@ -2279,7 +2259,6 @@
   </body>
 
   </html>
-
   <!DOCTYPE html>
   <html lang="es">
 
@@ -2482,328 +2461,6 @@
         <button class="btn" id="report-btn">Reportar Problema</button>
       </div>
     </div>
-  </body>
-
-  </html>
-
-  <!DOCTYPE html>
-  <html lang="es">
-
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrusel de Personajes de Anime</title>
-    <style>
-      /* Estilo general del carrusel */
-      .carousel-container {
-        position: relative;
-        width: 100%;
-        max-width: 800px;
-        margin: 20px auto;
-        overflow: hidden;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        background: #f9f9f9;
-      }
-
-      .carousel {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-      }
-
-      .slide {
-        min-width: 100%;
-        box-sizing: border-box;
-        padding: 20px;
-        text-align: center;
-        position: relative;
-      }
-
-      .slide img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-      }
-
-      .slide h2 {
-        margin: 10px 0;
-        font-size: 1.4em;
-        color: #333;
-      }
-
-      .slide p {
-        margin: 5px 0;
-        font-size: 1.2em;
-        color: #666;
-      }
-
-      .follow-button {
-        background-color: #25d366;
-        /* Color de WhatsApp */
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 1em;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .follow-button:hover {
-        background-color: #1ebc59;
-      }
-
-      .prev-button,
-      .next-button {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: rgba(0, 0, 0, 0.3);
-        color: white;
-        border: none;
-        padding: 10px;
-        cursor: pointer;
-        border-radius: 50%;
-        font-size: 1.5em;
-        z-index: 10;
-      }
-
-      .prev-button {
-        left: 10px;
-      }
-
-      .next-button {
-        right: 10px;
-      }
-
-      /* Estilo para la animación de la burbujita */
-      .bubble {
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%) translateY(10px);
-        background-color: #25d366;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 0.9em;
-        display: none;
-        opacity: 0;
-        transition: opacity 0.5s, transform 0.5s;
-      }
-
-      .bubble.show {
-        display: block;
-        opacity: 1;
-        transform: translateX(-50%) translateY(-50px);
-      }
-
-      /* Estilo para las recomendaciones sin interferir con la página principal */
-      .recommendations-container {
-        margin: 20px auto;
-        max-width: 800px;
-        padding: 20px;
-        background: #f0f0f0;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        position: relative;
-        font-family: Arial, sans-serif;
-        /* Evitar interferencias con la fuente de la página */
-      }
-
-      .recommendations-container h3 {
-        margin-bottom: 20px;
-        font-size: 1.5em;
-        color: #333;
-      }
-
-      .recommendations-container ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .recommendations-container li {
-        margin: 10px 0;
-        font-size: 1.2em;
-        color: #555;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: relative;
-      }
-
-      .recommendations-container li .name-container {
-        display: flex;
-        align-items: center;
-      }
-
-      .recommendations-container li img.verify-icon {
-        width: 20px;
-        height: 20px;
-        margin-left: 5px;
-      }
-
-      .recommendations-container button {
-        background-color: #25d366;
-        /* Color de WhatsApp */
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 15px;
-        cursor: pointer;
-        font-size: 0.9em;
-        margin-left: 10px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .recommendations-container button:hover {
-        background-color: #1ebc59;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="carousel-container">
-      <div class="carousel">
-        <!-- Slide 1 -->
-        <div class="slide">
-          <img src="https://imgix.ranker.com/list_img_v2/8413/2728413/original/best-naruto-uzumaki-quotes?fit=crop&fm=pjpg&q=80&dpr=2&w=1200&h=720" alt="Naruto Uzumaki">
-          <h2>Naruto Uzumaki</h2>
-          <p>Seguidores: 2.5M</p>
-          <button class="follow-button" onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </div>
-        <!-- Slide 2 -->
-        <div class="slide">
-          <img src="https://image.api.playstation.com/vulcan/ap/rnd/202402/2304/60c489bc534a5909dad165af757a0af187edf44a9a1f4515.png" alt="Goku">
-          <h2>Goku</h2>
-          <p>Seguidores: 3.2M</p>
-          <button class="follow-button" onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </div>
-        <!-- Slide 3 -->
-        <div class="slide">
-          <img src="https://asset-2.tstatic.net/jogja/foto/bank/images/Monkey-D-Luffy.jpg" alt="Monkey D. Luffy">
-          <h2>Monkey D. Luffy</h2>
-          <p>Seguidores: 1.8M</p>
-          <button class="follow-button" onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </div>
-        <!-- Slide 4 -->
-        <div class="slide">
-          <img src="https://ramenparados.com/wp-content/uploads/2020/01/sailor-moon-1000x600.jpg" alt="Sailor Moon">
-          <h2>Sailor Moon</h2>
-          <p>Seguidores: 2.4M</p>
-          <button class="follow-button" onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </div>
-        <!-- Slide 5 -->
-        <div class="slide">
-          <img src="https://lucien0maverick.wordpress.com/wp-content/uploads/2015/10/spike-spiegel-2.jpg" alt="Spike Spiegel">
-          <h2>Spike Spiegel</h2>
-          <p>Seguidores: 1.4M</p>
-          <button class="follow-button" onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </div>
-        <!-- Slide 6 -->
-        <div class="slide">
-          <img src="https://i.redd.it/ylpsqwy1uoe81.jpg" alt="Edward Elric">
-          <h2>Edward Elric</h2>
-          <p>Seguidores: 1.9M</p>
-          <button class="follow-button" onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </div>
-      </div>
-      <button class="prev-button">&lt;</button>
-      <button class="next-button">&gt;</button>
-    </div>
-
-    <div class="recommendations-container">
-      <h3>Personajes Recomendados</h3>
-      <ul>
-        <li>
-          <div class="name-container">
-            Gohan (Dragon Ball)
-            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
-          </div>
-          <button onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </li>
-        <li>
-          <div class="name-container">
-            Inuyasha
-            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
-          </div>
-          <button onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </li>
-        <li>
-          <div class="name-container">
-            Kagome Higurashi
-            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
-          </div>
-          <button onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </li>
-        <li>
-          <div class="name-container">
-            Miroku
-            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
-          </div>
-          <button onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </li>
-        <li>
-          <div class="name-container">
-            Sango
-            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
-          </div>
-          <button onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </li>
-        <li>
-          <div class="name-container">
-            Kenshin Himura (Rurouni Kenshin)
-            <img src="https://cdn-icons-png.flaticon.com/512/7641/7641727.png" alt="Verificado" class="verify-icon">
-          </div>
-          <button onclick="follow(this)">Seguir</button>
-          <div class="bubble">¡Siguiendo!</div>
-        </li>
-      </ul>
-    </div>
-
-    <script>
-      // Función para cambiar el slide
-      let index = 0;
-      const slides = document.querySelectorAll('.slide');
-      const totalSlides = slides.length;
-
-      function showSlide(n) {
-        if (n >= totalSlides) index = 0;
-        else if (n < 0) index = totalSlides - 1;
-        else index = n;
-        const offset = -index * 100;
-        document.querySelector('.carousel').style.transform = `translateX(${offset}%)`;
-      }
-      document.querySelector('.prev-button').addEventListener('click', () => {
-        showSlide(index - 1);
-      });
-      document.querySelector('.next-button').addEventListener('click', () => {
-        showSlide(index + 1);
-      });
-      // Función para seguir/unfollow
-      function follow(button) {
-        const bubble = button.nextElementSibling;
-        button.textContent = button.textContent === 'Seguir' ? 'Siguiendo' : 'Seguir';
-        bubble.classList.add('show');
-        setTimeout(() => bubble.classList.remove('show'), 2000);
-      }
-    </script>
   </body>
 
   </html>
@@ -3114,7 +2771,6 @@
 
   </html>
 
-  
   <!-- Comienzo de la función de noticias de anime -->
   <div id="anime-news-section" style="margin: 20px; padding: 20px; background-color: #1a1a1a; border-radius: 8px; box-shadow: 0 0 15px rgba(255, 165, 0, 0.5);">
     <h2 style="color: #ff4500; text-align: center;">Publicar Noticia de Anime</h2>

@@ -394,42 +394,196 @@ const animes = {
   ]
 };
 
+// Base de datos de perfiles
+const profilesData = [
+  {
+    id: 1,
+    name: "Darel Vega",
+    username: "@darelvega",
+    role: "Fundador de Vetplex",
+    location: "HT, Estados Unidos",
+    avatar: "https://m.media-amazon.com/images/S/pv-target-images/80d21af2c4f9fb94460aadf6f0d73b52e91a18d1c9de0fe09e69ac8034a809e9._SX300_.jpg",
+    followers: 21200,
+    following: 156,
+    posts: 342,
+    isVerified: true,
+    isAdmin: true,
+    status: "offline",
+    bio: "Fundador y CEO de Vetplex. Apasionado por el anime y la tecnología. Creando la mejor plataforma de streaming para la comunidad otaku.",
+    joinDate: "2020"
+  },
+  {
+    id: 2,
+    name: "Efrén García",
+    username: "@efrengarcia",
+    role: "Administrador",
+    location: "Caracas, Venezuela",
+    avatar: "https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2019/03/Inuysasha.jpg",
+    followers: 1050,
+    following: 89,
+    posts: 156,
+    isVerified: true,
+    isAdmin: true,
+    status: "offline",
+    bio: "Administrador de Vetplex. Especialista en contenido de anime clásico y moderación de la comunidad.",
+    joinDate: "2021"
+  },
+  {
+    id: 3,
+    name: "Danny López",
+    username: "@dannylopez",
+    role: "Administrador",
+    location: "Buenos Aires, Argentina",
+    avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtqEMHANmvgRWswKk0c6zzYnSgjdynIweeqg&usqp=CAU",
+    followers: 831,
+    following: 234,
+    posts: 89,
+    isVerified: true,
+    isAdmin: true,
+    status: "online",
+    bio: "Joven administrador enfocado en la comunidad juvenil. Me encantan los animes de acción y aventura.",
+    joinDate: "2022",
+    isMinor: true
+  },
+  {
+    id: 4,
+    name: "Rafael Lauro",
+    username: "@rafaellauro",
+    role: "Administrador",
+    location: "Caracas, Venezuela",
+    avatar: "https://cdn.pixabay.com/photo/2021/06/07/19/23/kakashi-6318812_1280.jpg",
+    followers: 221,
+    following: 67,
+    posts: 45,
+    isVerified: true,
+    isAdmin: true,
+    status: "offline",
+    bio: "Administrador especializado en anime de fantasy y aventura. Siempre buscando nuevas series para recomendar.",
+    joinDate: "2023",
+    isMinor: true
+  },
+  {
+    id: 5,
+    name: "Samuel Marín",
+    username: "@samuelmarin",
+    role: "Editor de Vetplex",
+    location: "Caracas, Venezuela",
+    avatar: "https://pbs.twimg.com/profile_images/1647039327082356744/ZaCfdoXp_400x400.png",
+    followers: 19800,
+    following: 342,
+    posts: 567,
+    isVerified: true,
+    isAdmin: true,
+    status: "online",
+    bio: "Editor más destacado de Vetplex. Creador de contenido y especialista en reseñas de anime. ¡Conectemos y hablemos de anime!",
+    joinDate: "2020"
+  },
+  // Usuarios regulares
+  {
+    id: 6,
+    name: "Ana Rodríguez",
+    username: "@anarodriguez",
+    role: "Usuario Premium",
+    location: "Madrid, España",
+    avatar: "https://i.pravatar.cc/150?img=1",
+    followers: 456,
+    following: 123,
+    posts: 78,
+    isVerified: false,
+    isAdmin: false,
+    status: "online",
+    bio: "Fan del anime romance y slice of life. Siempre en busca de nuevas recomendaciones.",
+    joinDate: "2023"
+  },
+  {
+    id: 7,
+    name: "Carlos Mendoza",
+    username: "@carlosmendoza",
+    role: "Usuario",
+    location: "México DF, México",
+    avatar: "https://i.pravatar.cc/150?img=2",
+    followers: 234,
+    following: 89,
+    posts: 45,
+    isVerified: false,
+    isAdmin: false,
+    status: "away",
+    bio: "Otaku desde los 90s. Me encantan los mecha y los animes de ciencia ficción.",
+    joinDate: "2022"
+  },
+  {
+    id: 8,
+    name: "María González",
+    username: "@mariagonzalez",
+    role: "Usuario Premium",
+    location: "Barcelona, España",
+    avatar: "https://i.pravatar.cc/150?img=3",
+    followers: 678,
+    following: 234,
+    posts: 134,
+    isVerified: true,
+    isAdmin: false,
+    status: "online",
+    bio: "Creadora de contenido sobre anime. Especializada en análisis de personajes femeninos.",
+    joinDate: "2021"
+  }
+];
+
+let currentFilter = 'all';
+let currentProfileData = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   populateCarousel("carousel-emision", animes.emision);
   populateCarousel("carousel-recomendados", animes.recomendados);
   populateCarousel("carousel-populares", animes.populares);
   populateCarousel("carousel-vistos", animes.vistos);
-  
-  });
+
+  // Inicializar perfiles al cargar la página
+  setTimeout(() => {
+    displayProfiles();
+  }, 100);
+
+  // Event listener para búsqueda de perfiles
+  const profileSearchInput = document.getElementById('profiles-search-input');
+  if (profileSearchInput) {
+    profileSearchInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        searchProfiles();
+      }
+    });
+  }
+
+});
 
 function populateCarousel(carouselId, animeList) {
   const carousel = document.getElementById(carouselId);
   const container = carousel.parentElement;
-  
+
   // Limpiar carrusel existente
   carousel.innerHTML = '';
-  
+
   animeList.forEach((anime, index) => {
     const item = document.createElement("div");
     item.classList.add("carousel-item");
-    
+
     // Determinar badge de calidad y estado
     let qualityBadge = '';
     let statusBadge = '';
-    
+
     if (anime.year >= 2024) {
       qualityBadge = '<div class="quality-badge">Nuevo</div>';
     } else if (anime.year >= 2020) {
       qualityBadge = '<div class="quality-badge">HD</div>';
     }
-    
+
     // Badge de estado basado en el carrusel
     if (carouselId.includes('emision')) {
       statusBadge = '<div class="status-badge ongoing">En Emisión</div>';
     } else if (carouselId.includes('populares')) {
       statusBadge = '<div class="status-badge completed">Completo</div>';
     }
-    
+
     item.innerHTML = `
             ${qualityBadge}
             ${statusBadge}
@@ -442,19 +596,19 @@ function populateCarousel(carouselId, animeList) {
     item.onclick = () => showModal(anime.title, anime.description, anime.year);
     carousel.appendChild(item);
   });
-  
+
   // Agregar botones de navegación si no existen
   if (!container.querySelector('.carousel-nav')) {
     const prevBtn = document.createElement('button');
     prevBtn.className = 'carousel-nav prev';
     prevBtn.innerHTML = '❮';
     prevBtn.onclick = () => scrollCarousel(carouselId, -200);
-    
+
     const nextBtn = document.createElement('button');
     nextBtn.className = 'carousel-nav next';
     nextBtn.innerHTML = '❯';
     nextBtn.onclick = () => scrollCarousel(carouselId, 200);
-    
+
     container.appendChild(prevBtn);
     container.appendChild(nextBtn);
   }
@@ -510,15 +664,15 @@ function searchAnime() {
   }
 }
 
-// Función para búsqueda desde el header
+// Funciones de búsqueda desde header
 function searchFromHeader() {
   const input = document.getElementById("main-search-input").value.toLowerCase().trim();
-  
+
   if (input === "") {
     alert("Por favor, ingresa un término de búsqueda");
     return;
   }
-  
+
   const allAnimes = Object.values(animes).flat();
   const results = allAnimes.filter((anime) =>
     anime.title.toLowerCase().includes(input) ||
@@ -532,14 +686,10 @@ function searchFromHeader() {
   } else {
     alert("Anime no encontrado. Intenta con otros términos.");
   }
-  
+
   // Limpiar el input
   document.getElementById("main-search-input").value = "";
 }
-
-
-
-
 
 // Event listener para búsqueda desde header
 document.addEventListener('DOMContentLoaded', function() {
@@ -561,17 +711,17 @@ function showSearchModal() {
   const suggestions = document.getElementById("search-suggestions");
   const results = document.getElementById("search-results");
   const loader = document.getElementById("search-loader");
-  
+
   modal.style.display = "block";
   suggestions.style.display = "block";
   results.style.display = "none";
   loader.style.display = "none";
-  
+
   // Focus en el input después de la animación
   setTimeout(() => {
     input.focus();
   }, 300);
-  
+
   // Limpiar búsqueda anterior
   input.value = "";
   results.innerHTML = "";
@@ -580,7 +730,7 @@ function showSearchModal() {
 function closeSearchModal() {
   const modal = document.getElementById("search-modal");
   modal.style.display = "none";
-  
+
   // Limpiar estado
   document.getElementById("search-input-modal").value = "";
   document.getElementById("search-results").innerHTML = "";
@@ -594,19 +744,19 @@ function searchAnimeFromModal() {
   const resultsContainer = document.getElementById("search-results");
   const loader = document.getElementById("search-loader");
   const suggestions = document.getElementById("search-suggestions");
-  
+
   if (input === "") {
     suggestions.style.display = "block";
     resultsContainer.style.display = "none";
     loader.style.display = "none";
     return;
   }
-  
+
   // Mostrar loader
   suggestions.style.display = "none";
   resultsContainer.style.display = "none";
   loader.style.display = "block";
-  
+
   // Simular tiempo de búsqueda para mostrar la animación
   setTimeout(() => {
     const allAnimes = Object.values(animes).flat();
@@ -625,7 +775,7 @@ function searchAnimeFromModal() {
         const resultItem = document.createElement("div");
         resultItem.className = "search-result-item";
         resultItem.style.animationDelay = `${index * 0.1}s`;
-        
+
         resultItem.innerHTML = `
           <img src="${anime.imageUrl}" alt="${anime.title}">
           <div class="search-result-info">
@@ -634,12 +784,12 @@ function searchAnimeFromModal() {
             <div class="search-result-description">${anime.description}</div>
           </div>
         `;
-        
+
         resultItem.onclick = () => {
           closeSearchModal();
           showModal(anime.title, anime.description, anime.year);
         };
-        
+
         resultsContainer.appendChild(resultItem);
       });
     } else {
@@ -675,7 +825,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById("search-input-modal");
   if (searchInput) {
     let searchTimeout;
-    
+
     searchInput.addEventListener('input', function() {
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
@@ -686,7 +836,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }, 300); // Esperar 300ms después de que el usuario deje de escribir
     });
-    
+
     // Búsqueda al presionar Enter
     searchInput.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
@@ -713,25 +863,25 @@ function showSection(sectionName) {
   sections.forEach(section => {
     section.classList.remove('active');
   });
-  
+
   // Remover clase active de todos los nav-items
   const navItems = document.querySelectorAll('.nav-item');
   navItems.forEach(item => {
     item.classList.remove('active');
   });
-  
+
   // Mostrar la sección seleccionada
   const targetSection = document.getElementById(sectionName + '-section');
   if (targetSection) {
     targetSection.classList.add('active');
   }
-  
+
   // Agregar clase active al nav-item correspondiente
   const activeNavItem = document.querySelector(`.nav-item[onclick="showSection('${sectionName}')"]`);
   if (activeNavItem) {
     activeNavItem.classList.add('active');
   }
-  
+
   // Scroll al top cuando se cambia de sección
   window.scrollTo({
     top: 0,
@@ -787,4 +937,204 @@ function playEpisode(element) {
   const url = element.getAttribute("data-url");
   const viewer = document.getElementById("episode-viewer");
   viewer.src = url; // Actualiza el iframe con el URL del episodio
+}
+
+// Función para mostrar los perfiles
+function displayProfiles(profiles = profilesData) {
+  const grid = document.getElementById('profiles-grid');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+
+  profiles.forEach(profile => {
+    const profileCard = document.createElement('div');
+    profileCard.className = 'profile-card';
+    profileCard.onclick = () => openProfileModal(profile);
+
+    const verifiedIcon = profile.isVerified ? 
+      `<svg width="16" height="16" viewBox="0 0 24 24" fill="#FF9900">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+      </svg>` : '';
+
+    const statusClass = `status-${profile.status}`;
+
+    profileCard.innerHTML = `
+      <div class="profile-avatar">
+        <img src="${profile.avatar}" alt="${profile.name}">
+        <div class="profile-status ${statusClass}"></div>
+        ${profile.isVerified ? '<div class="profile-verified">' + verifiedIcon + '</div>' : ''}
+      </div>
+      <h3>
+        ${profile.name}
+        ${profile.isMinor ? '<span style="color: red; font-size: 12px;">⚠️</span>' : ''}
+      </h3>
+      <p>${profile.role}</p>
+      <p>${profile.location}</p>
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <span class="number">${formatNumber(profile.followers)}</span>
+          <span class="label">Seguidores</span>
+        </div>
+        <div class="profile-stat">
+          <span class="number">${formatNumber(profile.posts)}</span>
+          <span class="label">Posts</span>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(profileCard);
+  });
+}
+
+// Función para formatear números
+function formatNumber(num) {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'M';
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'k';
+  }
+  return num.toString();
+}
+
+// Función para filtrar perfiles
+function filterProfiles(event, type) {
+  currentFilter = type;
+
+  // Actualizar botones activos
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  event.target.classList.add('active');
+
+  let filteredProfiles = profilesData;
+
+  switch(type) {
+    case 'admins':
+      filteredProfiles = profilesData.filter(p => p.isAdmin);
+      break;
+    case 'users':
+      filteredProfiles = profilesData.filter(p => !p.isAdmin);
+      break;
+    case 'verified':
+      filteredProfiles = profilesData.filter(p => p.isVerified);
+      break;
+    default:
+      filteredProfiles = profilesData;
+  }
+
+  displayProfiles(filteredProfiles);
+}
+
+// Función para buscar perfiles
+function searchProfiles() {
+  const input = document.getElementById('profiles-search-input');
+  const query = input.value.toLowerCase().trim();
+
+  if (query === '') {
+    displayProfiles();
+    return;
+  }
+
+  const results = profilesData.filter(profile => 
+    profile.name.toLowerCase().includes(query) ||
+    profile.username.toLowerCase().includes(query) ||
+    profile.role.toLowerCase().includes(query) ||
+    profile.location.toLowerCase().includes(query)
+  );
+
+  displayProfiles(results);
+}
+
+// Función para abrir modal de perfil
+function openProfileModal(profile) {
+  currentProfileData = profile;
+
+  // Actualizar datos del modal
+  document.getElementById('modal-profile-avatar').src = profile.avatar;
+  document.getElementById('modal-profile-name').innerHTML = `
+    ${profile.name}
+    ${profile.isVerified ? 
+      `<svg width="20" height="20" viewBox="0 0 24 24" fill="#FF9900">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+      </svg>` : ''}
+    ${profile.isMinor ? '<span style="color: red;">⚠️</span>' : ''}
+  `;
+  document.getElementById('modal-profile-role').textContent = profile.role;
+  document.getElementById('modal-profile-location').textContent = profile.location;
+  document.getElementById('modal-followers').textContent = formatNumber(profile.followers);
+  document.getElementById('modal-following').textContent = formatNumber(profile.following);
+  document.getElementById('modal-posts').textContent = formatNumber(profile.posts);
+  document.getElementById('modal-profile-bio').textContent = profile.bio;
+
+  // Actualizar estado
+  const statusElement = document.getElementById('modal-profile-status');
+  statusElement.className = `profile-status status-${profile.status}`;
+
+  // Generar actividad reciente
+  const activityContainer = document.getElementById('modal-profile-activity');
+  activityContainer.innerHTML = generateRecentActivity(profile);
+
+  // Mostrar modal
+  document.getElementById('profile-modal').style.display = 'block';
+}
+
+// Función para cerrar modal de perfil
+function closeProfileModal() {
+  document.getElementById('profile-modal').style.display = 'none';
+  currentProfileData = null;
+}
+
+// Función para seguir/dejar de seguir
+function toggleFollow() {
+  const button = document.getElementById('modal-follow-btn');
+  const isFollowing = button.classList.contains('following');
+
+  if (isFollowing) {
+    button.textContent = 'Seguir';
+    button.classList.remove('following');
+    currentProfileData.followers--;
+  } else {
+    button.textContent = 'Siguiendo';
+    button.classList.add('following');
+    currentProfileData.followers++;
+  }
+
+  // Actualizar contador
+  document.getElementById('modal-followers').textContent = formatNumber(currentProfileData.followers);
+}
+
+// Función para iniciar chat
+function startChat() {
+  if (currentProfileData.status === 'offline') {
+    alert(`${currentProfileData.name} no está disponible para chatear en este momento.`);
+  } else {
+    alert(`Iniciando chat con ${currentProfileData.name}...`);
+  }
+}
+
+// Función para generar actividad reciente
+function generateRecentActivity(profile) {
+  const activities = [
+    { icon: '📺', text: `Calificó "${getRandomAnime()}" con 5 estrellas`, time: '2h' },
+    { icon: '💬', text: 'Comentó en una discusión sobre One Piece', time: '4h' },
+    { icon: '➕', text: `Agregó "${getRandomAnime()}" a su lista`, time: '1d' },
+    { icon: '👍', text: 'Le gustó una reseña de Attack on Titan', time: '2d' },
+    { icon: '📝', text: 'Escribió una reseña de Demon Slayer', time: '3d' }
+  ];
+
+  return activities.slice(0, 3).map(activity => `
+    <div class="activity-item">
+      <div class="activity-icon">${activity.icon}</div>
+      <div style="flex: 1;">
+        <p style="margin: 0; color: #232F3E; font-size: 14px;">${activity.text}</p>
+        <p style="margin: 0; color: #565959; font-size: 12px;">Hace ${activity.time}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Función auxiliar para obtener anime aleatorio
+function getRandomAnime() {
+  const animeNames = ['Naruto', 'One Piece', 'Dragon Ball', 'Attack on Titan', 'Death Note', 'My Hero Academia'];
+  return animeNames[Math.floor(Math.random() * animeNames.length)];
 }
