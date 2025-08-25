@@ -578,107 +578,7 @@ function searchFromHeader() {
   document.getElementById("main-search-input").value = "";
 }
 
-// Lista de cómics de ejemplo
-const comics = [
-  {
-    title: "One Piece Manga",
-    author: "Eiichiro Oda",
-    year: 1997,
-    description: "Las aventuras de Monkey D. Luffy y su tripulación de piratas en busca del tesoro One Piece.",
-    type: "manga"
-  },
-  {
-    title: "Naruto Manga",
-    author: "Masashi Kishimoto", 
-    year: 2000,
-    description: "La historia de un joven ninja que sueña con convertirse en Hokage.",
-    type: "manga"
-  },
-  {
-    title: "Solo Leveling",
-    author: "Chugong",
-    year: 2018,
-    description: "Un cazador débil se convierte en el más poderoso después de obtener habilidades únicas.",
-    type: "manhwa"
-  },
-  {
-    title: "Tower of God",
-    author: "SIU",
-    year: 2010,
-    description: "Un joven llamado Bam sube una torre misteriosa para encontrar a su amiga Rachel.",
-    type: "manhwa"
-  },
-  {
-    title: "Attack on Titan Manga",
-    author: "Hajime Isayama",
-    year: 2009,
-    description: "La humanidad lucha por sobrevivir contra gigantes devoradores de hombres.",
-    type: "manga"
-  }
-];
 
-// Función para búsqueda específica de cómics
-function searchComics() {
-  const input = document.getElementById("comic-search-input").value.toLowerCase().trim();
-  const resultsContainer = document.getElementById("comic-results-container");
-  const searchResults = document.getElementById("comic-search-results");
-  
-  if (input === "") {
-    searchResults.style.display = "none";
-    return;
-  }
-  
-  const results = comics.filter((comic) =>
-    comic.title.toLowerCase().includes(input) ||
-    comic.author.toLowerCase().includes(input) ||
-    comic.description.toLowerCase().includes(input) ||
-    comic.type.toLowerCase().includes(input)
-  );
-  
-  resultsContainer.innerHTML = "";
-  
-  if (results.length > 0) {
-    results.forEach(comic => {
-      const comicElement = document.createElement('div');
-      comicElement.style.cssText = `
-        background-color: #444;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        text-align: left;
-        border: 1px solid #555;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      `;
-      
-      comicElement.innerHTML = `
-        <h4 style="color: #FF9900; margin: 0 0 8px 0;">${comic.title}</h4>
-        <p style="color: #CCCCCC; margin: 4px 0; font-size: 14px;"><strong>Autor:</strong> ${comic.author}</p>
-        <p style="color: #CCCCCC; margin: 4px 0; font-size: 14px;"><strong>Año:</strong> ${comic.year}</p>
-        <p style="color: #CCCCCC; margin: 4px 0; font-size: 14px;"><strong>Tipo:</strong> ${comic.type.charAt(0).toUpperCase() + comic.type.slice(1)}</p>
-        <p style="color: #CCCCCC; margin: 8px 0 0 0; font-size: 13px;">${comic.description}</p>
-      `;
-      
-      comicElement.onmouseover = () => comicElement.style.backgroundColor = "#555";
-      comicElement.onmouseout = () => comicElement.style.backgroundColor = "#444";
-      comicElement.onclick = () => {
-        alert(`Abriendo: ${comic.title}`);
-      };
-      
-      resultsContainer.appendChild(comicElement);
-    });
-    
-    searchResults.style.display = "block";
-  } else {
-    resultsContainer.innerHTML = `
-      <div style="text-align: center; padding: 20px; color: #CCCCCC;">
-        <p>No se encontraron cómics con el término "${input}"</p>
-        <p style="font-size: 14px;">Intenta con otros términos como "manga", "manhwa", o nombres de autores</p>
-      </div>
-    `;
-    searchResults.style.display = "block";
-  }
-}
 
 // Funciones para el menú desplegable de cómics
 function toggleComicMenu() {
@@ -722,32 +622,8 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Event listener para búsqueda en tiempo real de cómics
+// Event listener para búsqueda desde header
 document.addEventListener('DOMContentLoaded', function() {
-  const comicSearchInput = document.getElementById("comic-search-input");
-  if (comicSearchInput) {
-    let searchTimeout;
-    
-    comicSearchInput.addEventListener('input', function() {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        if (this.value.trim().length > 0) {
-          searchComics();
-        } else {
-          document.getElementById("comic-search-results").style.display = "none";
-        }
-      }, 300);
-    });
-    
-    comicSearchInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        searchComics();
-      }
-    });
-  }
-  
-  // Event listener para búsqueda desde header
   const mainSearchInput = document.getElementById("main-search-input");
   if (mainSearchInput) {
     mainSearchInput.addEventListener('keypress', function(e) {
