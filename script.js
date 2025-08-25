@@ -400,48 +400,7 @@ document.addEventListener("DOMContentLoaded", () => {
   populateCarousel("carousel-populares", animes.populares);
   populateCarousel("carousel-vistos", animes.vistos);
   
-  // Funcionalidad para la sección de cómics
-document.addEventListener('DOMContentLoaded', function() {
-  const comicForm = document.getElementById('comicForm');
-  const comicsContainer = document.getElementById('comicsContainer');
-  
-  if (comicForm) {
-    comicForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const title = document.getElementById('comic-title').value;
-      const author = document.getElementById('comic-author').value;
-      const year = document.getElementById('comic-year').value;
-      const synopsis = document.getElementById('comic-synopsis').value;
-      
-      // Crear elemento del cómic
-      const comicElement = document.createElement('div');
-      comicElement.style.cssText = `
-        background-color: #444;
-        padding: 20px;
-        border-radius: 8px;
-        text-align: left;
-        border: 1px solid #555;
-      `;
-      
-      comicElement.innerHTML = `
-        <h4 style="color: #FF9900; margin: 0 0 10px 0;">${title}</h4>
-        <p style="color: #CCCCCC; margin: 5px 0; font-size: 14px;"><strong>Autor:</strong> ${author}</p>
-        <p style="color: #CCCCCC; margin: 5px 0; font-size: 14px;"><strong>Año:</strong> ${year}</p>
-        <p style="color: #CCCCCC; margin: 10px 0; font-size: 14px;"><strong>Sinopsis:</strong> ${synopsis}</p>
-        <button style="background-color: #FF9900; color: #000; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; margin-top: 10px;">Leer Cómic</button>
-      `;
-      
-      comicsContainer.appendChild(comicElement);
-      comicForm.reset();
-      
-      // Mensaje de confirmación
-      alert('¡Cómic publicado exitosamente!');
-    });
-  }
-});
-
-      });
+  });
 
 function populateCarousel(carouselId, animeList) {
   const carousel = document.getElementById(carouselId);
@@ -580,47 +539,7 @@ function searchFromHeader() {
 
 
 
-// Funciones para el menú desplegable de cómics
-function toggleComicMenu() {
-  const menu = document.getElementById("comic-dropdown-menu");
-  const isVisible = menu.style.display === "block";
-  menu.style.display = isVisible ? "none" : "block";
-}
 
-function showComicPublishForm() {
-  document.getElementById("comic-publish-form").style.display = "block";
-  document.getElementById("comic-dropdown-menu").style.display = "none";
-  
-  // Scroll suave al formulario
-  document.getElementById("comic-publish-form").scrollIntoView({
-    behavior: 'smooth',
-    block: 'center'
-  });
-}
-
-function hideComicPublishForm() {
-  document.getElementById("comic-publish-form").style.display = "none";
-}
-
-function showComicStats() {
-  document.getElementById("comic-dropdown-menu").style.display = "none";
-  alert("📊 Estadísticas: Esta función estará disponible próximamente");
-}
-
-function showComicFavorites() {
-  document.getElementById("comic-dropdown-menu").style.display = "none";
-  alert("⭐ Favoritos: Esta función estará disponible próximamente");
-}
-
-// Cerrar menú al hacer clic fuera
-document.addEventListener('click', function(e) {
-  const menu = document.getElementById("comic-dropdown-menu");
-  const menuBtn = document.getElementById("comic-menu-btn");
-  
-  if (menu && menuBtn && !menu.contains(e.target) && !menuBtn.contains(e.target)) {
-    menu.style.display = "none";
-  }
-});
 
 // Event listener para búsqueda desde header
 document.addEventListener('DOMContentLoaded', function() {
