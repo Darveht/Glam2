@@ -1344,14 +1344,14 @@
     <!-- Sección de Cómics -->
     <div id="comics-section" class="section">
       <div style="text-align: center; padding: 50px 20px;">
-        <h2 style="color: #FF9900; font-size: 32px; margin-bottom: 20px;">Cómics</h2>
-        <p style="color: #FFFFFF; font-size: 18px; margin-bottom: 30px;">Explora nuestra colección de cómics y manhwas</p>
+        <h2 style="color: #FF9900; font-size: 32px; margin-bottom: 20px;">Cómics y Manhwas</h2>
+        <p style="color: #FFFFFF; font-size: 18px; margin-bottom: 30px;">Explora y publica tu colección de cómics y manhwas</p>
         
-        <!-- Barra de búsqueda específica para cómics -->
-        <div style="max-width: 600px; margin: 0 auto 30px auto; display: flex; background-color: #FFFFFF; border-radius: 6px; overflow: hidden; border: 2px solid #FF9900;">
-          <input type="text" id="comic-search-input" placeholder="Buscar cómics, manhwas..." 
-                 style="flex: 1; padding: 12px 16px; border: none; outline: none; font-size: 16px; color: #0F1111; background: transparent; font-family: Arial, sans-serif;">
-          <button onclick="searchComics()" style="padding: 12px 16px; background-color: #FEBD69; border: none; cursor: pointer; color: #0F1111; display: flex; align-items: center; justify-content: center; width: 50px;">
+        <!-- Barra de búsqueda específica para cómics estilo Amazon -->
+        <div style="max-width: 600px; margin: 0 auto 30px auto; display: flex; background-color: #FFFFFF; border-radius: 6px; overflow: hidden; border: 2px solid #FF9900; box-shadow: 0 2px 8px rgba(255, 153, 0, 0.2);">
+          <input type="text" id="comic-search-input" placeholder="Buscar cómics, manhwas, autores..." 
+                 style="flex: 1; padding: 14px 16px; border: none; outline: none; font-size: 16px; color: #0F1111; background: transparent; font-family: Arial, sans-serif;">
+          <button onclick="searchComics()" style="padding: 14px 18px; background-color: #FEBD69; border: none; cursor: pointer; color: #0F1111; display: flex; align-items: center; justify-content: center; width: 60px; transition: background-color 0.2s;">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M23.384 21.619l-6.529-6.529c1.378-1.611 2.145-3.669 2.145-5.803C19 4.141 14.859 0 9.713 0S.426 4.141.426 9.287s4.141 9.287 9.287 9.287c2.134 0 4.192-.767 5.803-2.145l6.529 6.529 1.339-1.339zM2.426 9.287c0-4.025 3.262-7.287 7.287-7.287s7.287 3.262 7.287 7.287-3.262 7.287-7.287 7.287-7.287-3.262-7.287-7.287z"/>
             </svg>
@@ -1359,36 +1359,39 @@
         </div>
         
         <!-- Resultados de búsqueda de cómics -->
-        <div id="comic-search-results" style="display: none; max-width: 800px; margin: 0 auto 30px auto; background-color: #333; border-radius: 10px; padding: 20px;">
-          <h3 style="color: #FF9900; margin-bottom: 15px;">Resultados de búsqueda</h3>
+        <div id="comic-search-results" style="display: none; max-width: 800px; margin: 0 auto 30px auto; background-color: #333; border-radius: 10px; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+          <h3 style="color: #FF9900; margin-bottom: 15px; font-size: 20px;">Resultados de búsqueda</h3>
           <div id="comic-results-container"></div>
         </div>
         
-        <!-- Contenido específico de cómics -->
-        <div style="background-color: #333; padding: 30px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
-          <h3 style="color: #FF9900;">Publicar Cómic Privado</h3>
-          <form id="comicForm" style="display: flex; flex-direction: column; gap: 15px;">
+        <!-- Formulario para publicar cómics -->
+        <div style="background-color: #333; padding: 30px; border-radius: 12px; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);">
+          <h3 style="color: #FF9900; margin-bottom: 20px; font-size: 24px; text-align: center;">📚 Publicar Cómic Privado</h3>
+          <form id="comicForm" style="display: flex; flex-direction: column; gap: 18px;">
             <div>
-              <label for="comic-title" style="color: #FFFFFF; display: block; margin-bottom: 5px;">Título del cómic:</label>
-              <input type="text" id="comic-title" style="padding: 10px; border: none; border-radius: 5px; background-color: #444; color: #FFF; width: 100%;" required>
+              <label for="comic-title" style="color: #FFFFFF; display: block; margin-bottom: 8px; font-weight: bold;">Título del cómic:</label>
+              <input type="text" id="comic-title" style="padding: 12px; border: none; border-radius: 6px; background-color: #444; color: #FFF; width: 100%; font-size: 16px; transition: background-color 0.2s;" required>
             </div>
             <div>
-              <label for="comic-author" style="color: #FFFFFF; display: block; margin-bottom: 5px;">Autor:</label>
-              <input type="text" id="comic-author" style="padding: 10px; border: none; border-radius: 5px; background-color: #444; color: #FFF; width: 100%;" required>
+              <label for="comic-author" style="color: #FFFFFF; display: block; margin-bottom: 8px; font-weight: bold;">Autor:</label>
+              <input type="text" id="comic-author" style="padding: 12px; border: none; border-radius: 6px; background-color: #444; color: #FFF; width: 100%; font-size: 16px; transition: background-color 0.2s;" required>
             </div>
             <div>
-              <label for="comic-year" style="color: #FFFFFF; display: block; margin-bottom: 5px;">Año de publicación:</label>
-              <input type="number" id="comic-year" min="1900" max="2024" style="padding: 10px; border: none; border-radius: 5px; background-color: #444; color: #FFF; width: 100%;" required>
+              <label for="comic-year" style="color: #FFFFFF; display: block; margin-bottom: 8px; font-weight: bold;">Año de publicación:</label>
+              <input type="number" id="comic-year" min="1900" max="2024" style="padding: 12px; border: none; border-radius: 6px; background-color: #444; color: #FFF; width: 100%; font-size: 16px; transition: background-color 0.2s;" required>
             </div>
             <div>
-              <label for="comic-synopsis" style="color: #FFFFFF; display: block; margin-bottom: 5px;">Sinopsis:</label>
-              <textarea id="comic-synopsis" rows="4" style="padding: 10px; border: none; border-radius: 5px; background-color: #444; color: #FFF; width: 100%;" required></textarea>
+              <label for="comic-synopsis" style="color: #FFFFFF; display: block; margin-bottom: 8px; font-weight: bold;">Sinopsis:</label>
+              <textarea id="comic-synopsis" rows="4" style="padding: 12px; border: none; border-radius: 6px; background-color: #444; color: #FFF; width: 100%; font-size: 16px; resize: vertical; transition: background-color 0.2s;" required></textarea>
             </div>
-            <button type="submit" style="background-color: #FF9900; color: #232F3E; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Publicar Cómic</button>
+            <button type="submit" style="background-color: #FF9900; color: #232F3E; padding: 14px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; transition: background-color 0.2s; box-shadow: 0 2px 8px rgba(255, 153, 0, 0.3);">
+              📖 Publicar Cómic
+            </button>
           </form>
           
-          <div id="comicsList" style="margin-top: 30px;">
-            <h3 style="color: #FF9900;">Cómics Publicados</h3>
+          <!-- Lista de cómics publicados -->
+          <div id="comicsList" style="margin-top: 35px;">
+            <h3 style="color: #FF9900; margin-bottom: 20px; font-size: 20px; text-align: center;">📚 Cómics Publicados</h3>
             <div id="comicsContainer" style="display: flex; flex-direction: column; gap: 15px;">
               <!-- Los cómics publicados aparecerán aquí -->
             </div>
