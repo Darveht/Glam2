@@ -680,6 +680,48 @@ function searchComics() {
   }
 }
 
+// Funciones para el menú desplegable de cómics
+function toggleComicMenu() {
+  const menu = document.getElementById("comic-dropdown-menu");
+  const isVisible = menu.style.display === "block";
+  menu.style.display = isVisible ? "none" : "block";
+}
+
+function showComicPublishForm() {
+  document.getElementById("comic-publish-form").style.display = "block";
+  document.getElementById("comic-dropdown-menu").style.display = "none";
+  
+  // Scroll suave al formulario
+  document.getElementById("comic-publish-form").scrollIntoView({
+    behavior: 'smooth',
+    block: 'center'
+  });
+}
+
+function hideComicPublishForm() {
+  document.getElementById("comic-publish-form").style.display = "none";
+}
+
+function showComicStats() {
+  document.getElementById("comic-dropdown-menu").style.display = "none";
+  alert("📊 Estadísticas: Esta función estará disponible próximamente");
+}
+
+function showComicFavorites() {
+  document.getElementById("comic-dropdown-menu").style.display = "none";
+  alert("⭐ Favoritos: Esta función estará disponible próximamente");
+}
+
+// Cerrar menú al hacer clic fuera
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById("comic-dropdown-menu");
+  const menuBtn = document.getElementById("comic-menu-btn");
+  
+  if (menu && menuBtn && !menu.contains(e.target) && !menuBtn.contains(e.target)) {
+    menu.style.display = "none";
+  }
+});
+
 // Event listener para búsqueda en tiempo real de cómics
 document.addEventListener('DOMContentLoaded', function() {
   const comicSearchInput = document.getElementById("comic-search-input");

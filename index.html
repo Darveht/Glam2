@@ -1272,6 +1272,16 @@
         }
       }
 
+      /* Estilos para el menú desplegable de cómics */
+      #comic-dropdown-menu button:hover {
+        background-color: #444 !important;
+      }
+
+      #comic-menu-btn:hover {
+        background-color: #FF9900;
+        color: #232F3E;
+      }
+
       /* Responsive */
       @media (max-width: 768px) {
         .search-header {
@@ -1310,6 +1320,11 @@
         .genre-searches {
           justify-content: flex-start;
         }
+
+        #comic-dropdown-menu {
+          right: 0 !important;
+          left: auto !important;
+        }
       }
     </style>
   </head>
@@ -1344,8 +1359,37 @@
     <!-- Sección de Cómics -->
     <div id="comics-section" class="section">
       <div style="text-align: center; padding: 50px 20px;">
-        <h2 style="color: #FF9900; font-size: 32px; margin-bottom: 20px;">Cómics y Manhwas</h2>
-        <p style="color: #FFFFFF; font-size: 18px; margin-bottom: 30px;">Explora y publica tu colección de cómics y manhwas</p>
+        <!-- Header con menú desplegable -->
+        <div style="position: relative; max-width: 800px; margin: 0 auto 30px auto;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+              <h2 style="color: #FF9900; font-size: 32px; margin: 0;">Cómics y Manhwas</h2>
+              <p style="color: #FFFFFF; font-size: 18px; margin: 5px 0 0 0;">Explora y publica tu colección de cómics y manhwas</p>
+            </div>
+            
+            <!-- Botón de menú (3 rayitas) -->
+            <button id="comic-menu-btn" onclick="toggleComicMenu()" style="background: none; border: 2px solid #FF9900; color: #FF9900; padding: 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Menú desplegable -->
+          <div id="comic-dropdown-menu" style="display: none; position: absolute; top: 80px; right: 0; background-color: #333; border: 1px solid #FF9900; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); z-index: 100; min-width: 200px;">
+            <div style="padding: 10px 0;">
+              <button onclick="showComicPublishForm()" style="width: 100%; text-align: left; padding: 12px 20px; background: none; border: none; color: #FFFFFF; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 10px;">
+                <span>📚</span> Publicar Cómic Privado
+              </button>
+              <button onclick="showComicStats()" style="width: 100%; text-align: left; padding: 12px 20px; background: none; border: none; color: #FFFFFF; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 10px;">
+                <span>📊</span> Estadísticas
+              </button>
+              <button onclick="showComicFavorites()" style="width: 100%; text-align: left; padding: 12px 20px; background: none; border: none; color: #FFFFFF; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 10px;">
+                <span>⭐</span> Mis Favoritos
+              </button>
+            </div>
+          </div>
+        </div>
         
         <!-- Barra de búsqueda específica para cómics estilo Amazon -->
         <div style="max-width: 600px; margin: 0 auto 30px auto; display: flex; background-color: #FFFFFF; border-radius: 6px; overflow: hidden; border: 2px solid #FF9900; box-shadow: 0 2px 8px rgba(255, 153, 0, 0.2);">
@@ -1364,9 +1408,13 @@
           <div id="comic-results-container"></div>
         </div>
         
-        <!-- Formulario para publicar cómics -->
-        <div style="background-color: #333; padding: 30px; border-radius: 12px; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);">
-          <h3 style="color: #FF9900; margin-bottom: 20px; font-size: 24px; text-align: center;">📚 Publicar Cómic Privado</h3>
+        <!-- Formulario para publicar cómics (inicialmente oculto) -->
+        <div id="comic-publish-form" style="display: none; background-color: #333; padding: 30px; border-radius: 12px; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="color: #FF9900; margin: 0; font-size: 24px;">📚 Publicar Cómic Privado</h3>
+            <button onclick="hideComicPublishForm()" style="background: none; border: none; color: #FF9900; cursor: pointer; font-size: 20px;">✕</button>
+          </div>
+          
           <form id="comicForm" style="display: flex; flex-direction: column; gap: 18px;">
             <div>
               <label for="comic-title" style="color: #FFFFFF; display: block; margin-bottom: 8px; font-weight: bold;">Título del cómic:</label>
@@ -1388,13 +1436,13 @@
               📖 Publicar Cómic
             </button>
           </form>
-          
-          <!-- Lista de cómics publicados -->
-          <div id="comicsList" style="margin-top: 35px;">
-            <h3 style="color: #FF9900; margin-bottom: 20px; font-size: 20px; text-align: center;">📚 Cómics Publicados</h3>
-            <div id="comicsContainer" style="display: flex; flex-direction: column; gap: 15px;">
-              <!-- Los cómics publicados aparecerán aquí -->
-            </div>
+        </div>
+        
+        <!-- Lista de cómics publicados -->
+        <div id="comicsList" style="margin-top: 35px; max-width: 800px; margin: 35px auto 0 auto;">
+          <h3 style="color: #FF9900; margin-bottom: 20px; font-size: 20px; text-align: center;">📚 Cómics Publicados</h3>
+          <div id="comicsContainer" style="display: flex; flex-direction: column; gap: 15px;">
+            <!-- Los cómics publicados aparecerán aquí -->
           </div>
         </div>
       </div>
