@@ -952,7 +952,7 @@ function displayProfiles(profiles = profilesData) {
     profileCard.onclick = () => openProfileModal(profile);
 
     const verifiedIcon = profile.isVerified ? 
-      `<svg width="16" height="16" viewBox="0 0 24 24" fill="#FF9900">
+      `<svg width="14" height="14" viewBox="0 0 24 24" fill="#FF9900">
         <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
       </svg>` : '';
 
@@ -964,12 +964,14 @@ function displayProfiles(profiles = profilesData) {
         <div class="profile-status ${statusClass}"></div>
         ${profile.isVerified ? '<div class="profile-verified">' + verifiedIcon + '</div>' : ''}
       </div>
-      <h3>
-        ${profile.name}
-        ${profile.isMinor ? '<span style="color: red; font-size: 12px;">⚠️</span>' : ''}
-      </h3>
-      <p>${profile.role}</p>
-      <p>${profile.location}</p>
+      <div class="profile-info">
+        <h3>
+          ${profile.name}
+          ${profile.isMinor ? '<span style="color: red; font-size: 12px;">⚠️</span>' : ''}
+        </h3>
+        <p class="profile-username">${profile.username}</p>
+        <p class="profile-role">${profile.role}</p>
+      </div>
       <div class="profile-stats">
         <div class="profile-stat">
           <span class="number">${formatNumber(profile.followers)}</span>
@@ -1076,12 +1078,18 @@ function openProfileModal(profile) {
 
   // Mostrar modal
   document.getElementById('profile-modal').style.display = 'block';
+  
+  // Prevenir scroll del body
+  document.body.style.overflow = 'hidden';
 }
 
 // Función para cerrar modal de perfil
 function closeProfileModal() {
   document.getElementById('profile-modal').style.display = 'none';
   currentProfileData = null;
+  
+  // Restaurar scroll del body
+  document.body.style.overflow = 'auto';
 }
 
 // Función para seguir/dejar de seguir

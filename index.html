@@ -536,51 +536,56 @@
     }
 
     .profiles-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 0;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
     .profile-card {
-      background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
+      background: #FFFFFF;
+      border-radius: 0;
+      padding: 16px 20px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #E7E7E7;
       position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .profile-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      border-color: rgba(255, 153, 0, 0.5);
+      background-color: #F7F8F8;
+    }
+
+    .profile-card:first-child {
+      border-top: 1px solid #E7E7E7;
     }
 
     .profile-avatar {
       position: relative;
-      display: inline-block;
-      margin-bottom: 15px;
+      flex-shrink: 0;
     }
 
     .profile-avatar img {
-      width: 80px;
-      height: 80px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
-      border: 3px solid #FF9900;
+      border: 2px solid #FF9900;
       object-fit: cover;
     }
 
     .profile-status {
       position: absolute;
-      bottom: 5px;
-      right: 5px;
-      width: 16px;
-      height: 16px;
+      bottom: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
-      border: 2px solid #1a1a1a;
+      border: 2px solid #FFFFFF;
     }
 
     .status-online {
@@ -597,55 +602,72 @@
 
     .profile-verified {
       position: absolute;
-      top: -5px;
-      right: -5px;
+      top: -2px;
+      right: -2px;
       background-color: #FF9900;
       border-radius: 50%;
-      width: 24px;
-      height: 24px;
+      width: 18px;
+      height: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .profile-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
     .profile-card h3 {
-      color: #FFFFFF;
-      margin: 10px 0 5px 0;
+      color: #0F1111;
+      margin: 0;
       font-size: 16px;
+      font-weight: 600;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 5px;
+      gap: 6px;
     }
 
-    .profile-card p {
-      color: #CCCCCC;
-      margin: 5px 0;
+    .profile-username {
+      color: #565959;
+      margin: 0;
       font-size: 14px;
+      font-weight: 400;
+    }
+
+    .profile-role {
+      color: #FF9900;
+      margin: 0;
+      font-size: 13px;
+      font-weight: 500;
     }
 
     .profile-stats {
       display: flex;
-      justify-content: space-around;
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      align-items: center;
+      gap: 16px;
+      margin-left: auto;
     }
 
     .profile-stat {
       text-align: center;
+      min-width: 50px;
     }
 
     .profile-stat .number {
       display: block;
-      color: #FF9900;
-      font-weight: bold;
+      color: #0F1111;
+      font-weight: 600;
       font-size: 16px;
+      line-height: 1.2;
     }
 
     .profile-stat .label {
-      color: #CCCCCC;
+      color: #565959;
       font-size: 12px;
+      line-height: 1.2;
     }
 
     /* Modal de perfil */
@@ -656,37 +678,43 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: #FFFFFF;
       z-index: 2000;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .profile-modal-content {
-      background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-      border-radius: 16px;
-      width: 90%;
-      max-width: 500px;
-      max-height: 80vh;
-      overflow-y: auto;
-      position: relative;
       animation: modalSlideIn 0.3s ease;
     }
 
+    .profile-modal-content {
+      background: #FFFFFF;
+      border-radius: 0;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      position: relative;
+    }
+
     .profile-modal-header {
-      padding: 30px 30px 20px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 0;
+      background: #FFFFFF;
+      padding: 16px 20px;
+      border-bottom: 1px solid #E7E7E7;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 10;
     }
 
     .profile-modal-close {
       position: absolute;
-      top: 15px;
-      right: 20px;
+      top: 16px;
+      left: 20px;
       cursor: pointer;
       font-size: 24px;
-      color: #999;
-      z-index: 1;
+      color: #0F1111;
+      z-index: 11;
+      background: none;
+      border: none;
+      padding: 4px;
     }
 
     .profile-modal-close:hover {
@@ -694,40 +722,47 @@
     }
 
     .profile-modal-avatar {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      border: 4px solid #FF9900;
-      margin-bottom: 15px;
+      border: 3px solid #FF9900;
       object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .profile-header-info {
+      flex: 1;
     }
 
     .profile-modal-name {
-      color: #FFFFFF;
-      font-size: 24px;
-      margin-bottom: 5px;
+      color: #0F1111;
+      font-size: 22px;
+      margin: 0 0 4px 0;
+      font-weight: 700;
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
     }
 
     .profile-modal-role {
       color: #FF9900;
-      font-size: 16px;
-      margin-bottom: 5px;
+      font-size: 14px;
+      margin: 0 0 2px 0;
+      font-weight: 500;
     }
 
     .profile-modal-location {
-      color: #CCCCCC;
+      color: #565959;
       font-size: 14px;
+      margin: 0;
     }
 
     .profile-modal-stats {
       display: flex;
       justify-content: space-around;
-      padding: 20px 30px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 24px 20px;
+      border-bottom: 1px solid #E7E7E7;
+      background: #F8F9FA;
     }
 
     .profile-modal-stat {
@@ -736,88 +771,99 @@
 
     .profile-modal-stat .number {
       display: block;
-      color: #FF9900;
-      font-weight: bold;
-      font-size: 20px;
+      color: #0F1111;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 1.2;
     }
 
     .profile-modal-stat .label {
-      color: #CCCCCC;
+      color: #565959;
       font-size: 14px;
+      margin-top: 4px;
     }
 
     .profile-modal-actions {
-      padding: 20px 30px;
+      padding: 20px;
       display: flex;
-      gap: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 12px;
+      border-bottom: 1px solid #E7E7E7;
     }
 
     .profile-modal-btn {
       flex: 1;
-      padding: 12px;
+      padding: 12px 16px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
     }
 
     .follow-btn {
       background-color: #FF9900;
-      color: #000;
+      color: #FFFFFF;
     }
 
     .follow-btn.following {
       background-color: #28a745;
-      color: #fff;
+      color: #FFFFFF;
     }
 
     .chat-btn {
-      background-color: #333;
-      color: #fff;
-      border: 1px solid #555;
+      background-color: #FFFFFF;
+      color: #0F1111;
+      border: 1px solid #D5D9D9;
     }
 
     .profile-modal-btn:hover {
-      transform: translateY(-2px);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .profile-modal-bio {
-      padding: 20px 30px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-bottom: 1px solid #E7E7E7;
     }
 
     .profile-modal-bio h4 {
-      color: #FF9900;
-      margin-bottom: 10px;
+      color: #0F1111;
+      margin: 0 0 12px 0;
+      font-size: 16px;
+      font-weight: 600;
     }
 
     .profile-modal-bio p {
-      color: #CCCCCC;
+      color: #565959;
       line-height: 1.6;
+      margin: 0;
+      font-size: 14px;
     }
 
     .profile-modal-activity {
-      padding: 20px 30px;
+      padding: 20px;
     }
 
     .profile-modal-activity h4 {
-      color: #FF9900;
-      margin-bottom: 15px;
+      color: #0F1111;
+      margin: 0 0 16px 0;
+      font-size: 16px;
+      font-weight: 600;
     }
 
     .activity-item {
       display: flex;
       align-items: flex-start;
-      margin-bottom: 15px;
-      padding: 10px;
-      background-color: rgba(255, 255, 255, 0.05);
+      margin-bottom: 16px;
+      padding: 12px;
+      background-color: #F8F9FA;
       border-radius: 8px;
+      border: 1px solid #E7E7E7;
     }
 
     .activity-icon {
-      margin-right: 10px;
+      margin-right: 12px;
       font-size: 18px;
     }
 
@@ -1349,13 +1395,15 @@
   <!-- Modal de perfil -->
   <div id="profile-modal" class="modal">
     <div class="profile-modal-content">
-      <span class="profile-modal-close" onclick="closeProfileModal()">&times;</span>
 
+      <button class="profile-modal-close" onclick="closeProfileModal()">←</button>
       <div class="profile-modal-header">
         <img id="modal-profile-avatar" class="profile-modal-avatar" src="" alt="">
-        <h2 id="modal-profile-name" class="profile-modal-name"></h2>
-        <p id="modal-profile-role" class="profile-modal-role"></p>
-        <p id="modal-profile-location" class="profile-modal-location"></p>
+        <div class="profile-header-info">
+          <h2 id="modal-profile-name" class="profile-modal-name"></h2>
+          <p id="modal-profile-role" class="profile-modal-role"></p>
+          <p id="modal-profile-location" class="profile-modal-location"></p>
+        </div>
         <div id="modal-profile-status" class="profile-status"></div>
       </div>
 
