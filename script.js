@@ -704,148 +704,13 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Funciones para el modal de búsqueda expandida
-function showSearchModal() {
-  const modal = document.getElementById("search-modal");
-  const input = document.getElementById("search-input-modal");
-  const suggestions = document.getElementById("search-suggestions");
-  const results = document.getElementById("search-results");
-  const loader = document.getElementById("search-loader");
-
-  modal.style.display = "block";
-  suggestions.style.display = "block";
-  results.style.display = "none";
-  loader.style.display = "none";
-
-  // Focus en el input después de la animación
-  setTimeout(() => {
-    input.focus();
-  }, 300);
-
-  // Limpiar búsqueda anterior
-  input.value = "";
-  results.innerHTML = "";
-}
-
-function closeSearchModal() {
-  const modal = document.getElementById("search-modal");
-  modal.style.display = "none";
-
-  // Limpiar estado
-  document.getElementById("search-input-modal").value = "";
-  document.getElementById("search-results").innerHTML = "";
-  document.getElementById("search-suggestions").style.display = "block";
-  document.getElementById("search-results").style.display = "none";
-  document.getElementById("search-loader").style.display = "none";
-}
-
-function searchAnimeFromModal() {
-  const input = document.getElementById("search-input-modal").value.toLowerCase().trim();
-  const resultsContainer = document.getElementById("search-results");
-  const loader = document.getElementById("search-loader");
-  const suggestions = document.getElementById("search-suggestions");
-
-  if (input === "") {
-    suggestions.style.display = "block";
-    resultsContainer.style.display = "none";
-    loader.style.display = "none";
-    return;
+// Función para manejar Enter en búsqueda del header
+function handleSearchKeyPress(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    searchFromHeader();
   }
-
-  // Mostrar loader
-  suggestions.style.display = "none";
-  resultsContainer.style.display = "none";
-  loader.style.display = "block";
-
-  // Simular tiempo de búsqueda para mostrar la animación
-  setTimeout(() => {
-    const allAnimes = Object.values(animes).flat();
-    const results = allAnimes.filter((anime) =>
-      anime.title.toLowerCase().includes(input) ||
-      anime.description.toLowerCase().includes(input) ||
-      (anime.tags && anime.tags.some(tag => tag.toLowerCase().includes(input)))
-    );
-
-    loader.style.display = "none";
-    resultsContainer.style.display = "block";
-    resultsContainer.innerHTML = "";
-
-    if (results.length > 0) {
-      results.forEach((anime, index) => {
-        const resultItem = document.createElement("div");
-        resultItem.className = "search-result-item";
-        resultItem.style.animationDelay = `${index * 0.1}s`;
-
-        resultItem.innerHTML = `
-          <img src="${anime.imageUrl}" alt="${anime.title}">
-          <div class="search-result-info">
-            <div class="search-result-title">${anime.title}</div>
-            <div class="search-result-year">Año: ${anime.year}</div>
-            <div class="search-result-description">${anime.description}</div>
-          </div>
-        `;
-
-        resultItem.onclick = () => {
-          closeSearchModal();
-          showModal(anime.title, anime.description, anime.year);
-        };
-
-        resultsContainer.appendChild(resultItem);
-      });
-    } else {
-      resultsContainer.innerHTML = `
-        <div class="no-results">
-          <h3>No se encontraron resultados</h3>
-          <p>Intenta con otros términos de búsqueda</p>
-          <div style="margin-top: 20px;">
-            <button onclick="showSuggestions()" style="background-color: #FF9900; color: #000; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">Ver sugerencias</button>
-          </div>
-        </div>
-      `;
-    }
-  }, 800); // Simular 800ms de tiempo de búsqueda
 }
-
-// Función para búsqueda rápida desde tags
-function quickSearch(term) {
-  const input = document.getElementById("search-input-modal");
-  input.value = term;
-  searchAnimeFromModal();
-}
-
-// Función para mostrar sugerencias
-function showSuggestions() {
-  document.getElementById("search-suggestions").style.display = "block";
-  document.getElementById("search-results").style.display = "none";
-  document.getElementById("search-input-modal").value = "";
-}
-
-// Agregar event listener para búsqueda en tiempo real
-document.addEventListener('DOMContentLoaded', function() {
-  const searchInput = document.getElementById("search-input-modal");
-  if (searchInput) {
-    let searchTimeout;
-
-    searchInput.addEventListener('input', function() {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        if (this.value.trim().length > 0) {
-          searchAnimeFromModal();
-        } else {
-          showSuggestions();
-        }
-      }, 300); // Esperar 300ms después de que el usuario deje de escribir
-    });
-
-    // Búsqueda al presionar Enter
-    searchInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        searchAnimeFromModal();
-      }
-    });
-  }
-});
 
 function moveCarousel(carouselId, direction) {
   const carousel = document.getElementById(carouselId);
@@ -1009,31 +874,43 @@ function filterProfiles(event, type) {
   event.target.classList.add('active');
 
   let filteredProfiles = profilesData;
+  let filterLabel = 'todos los usuarios';
 
   switch(type) {
     case 'admins':
       filteredProfiles = profilesData.filter(p => p.isAdmin);
+      filterLabel = 'administradores';
       break;
     case 'users':
       filteredProfiles = profilesData.filter(p => !p.isAdmin);
+      filterLabel = 'usuarios';
       break;
     case 'verified':
       filteredProfiles = profilesData.filter(p => p.isVerified);
+      filterLabel = 'usuarios verificados';
       break;
     default:
       filteredProfiles = profilesData;
   }
 
   displayProfiles(filteredProfiles);
+  
+  const resultsInfo = document.getElementById('profiles-results-info');
+  resultsInfo.innerHTML = `<span>Mostrando ${filteredProfiles.length} ${filterLabel}</span>`;
+  
+  // Limpiar búsqueda
+  document.getElementById('profiles-search-input').value = '';
 }
 
 // Función para buscar perfiles
 function searchProfiles() {
   const input = document.getElementById('profiles-search-input');
   const query = input.value.toLowerCase().trim();
+  const resultsInfo = document.getElementById('profiles-results-info');
 
   if (query === '') {
     displayProfiles();
+    resultsInfo.innerHTML = '<span>Mostrando todos los usuarios</span>';
     return;
   }
 
@@ -1045,6 +922,12 @@ function searchProfiles() {
   );
 
   displayProfiles(results);
+  
+  if (results.length === 0) {
+    resultsInfo.innerHTML = `<span style="color: #B12704;">No se encontraron resultados para "${query}"</span>`;
+  } else {
+    resultsInfo.innerHTML = `<span>Mostrando ${results.length} resultado${results.length === 1 ? '' : 's'} para "${query}"</span>`;
+  }
 }
 
 // Función para abrir modal de perfil
