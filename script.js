@@ -929,8 +929,26 @@ function searchProfiles() {
     return;
   }
 
-  // Buscar solo en perfiles
-  const results = profilesData.filter(profile => 
+  // Aplicar filtro actual primero
+  let baseProfiles = profilesData;
+  const activeButton = document.querySelector('.filter-btn.active');
+  if (activeButton) {
+    const filterType = activeButton.getAttribute('onclick').match(/'([^']+)'/)[1];
+    switch(filterType) {
+      case 'admins':
+        baseProfiles = profilesData.filter(p => p.isAdmin);
+        break;
+      case 'users':
+        baseProfiles = profilesData.filter(p => !p.isAdmin);
+        break;
+      case 'verified':
+        baseProfiles = profilesData.filter(p => p.isVerified);
+        break;
+    }
+  }
+
+  // Buscar dentro del conjunto filtrado
+  const results = baseProfiles.filter(profile => 
     profile.name.toLowerCase().includes(query) ||
     profile.username.toLowerCase().includes(query) ||
     profile.role.toLowerCase().includes(query) ||
@@ -1000,30 +1018,46 @@ function openProfileModal(profile) {
   const activityContainer = document.getElementById('modal-profile-activity');
   activityContainer.innerHTML = generateRecentActivity(profile);
 
-  // Mostrar modal en pantalla completa
+  // Mostrar modal en pantalla completa REAL
   const modal = document.getElementById('profile-modal');
+  
+  // Ocultar header y nav
+  const header = document.querySelector('header');
+  const bottomNav = document.querySelector('.bottom-nav');
+  if (header) header.style.display = 'none';
+  if (bottomNav) bottomNav.style.display = 'none';
+  
+  // Configurar modal para pantalla completa total
   modal.style.display = 'block';
   modal.style.position = 'fixed';
   modal.style.top = '0';
   modal.style.left = '0';
+  modal.style.right = '0';
+  modal.style.bottom = '0';
   modal.style.width = '100vw';
   modal.style.height = '100vh';
-  modal.style.zIndex = '2000';
+  modal.style.zIndex = '9999';
+  modal.style.margin = '0';
+  modal.style.padding = '0';
   
   // Prevenir scroll del body
   document.body.style.overflow = 'hidden';
   
   // Scroll al top del modal
-  const modalContent = document.querySelector('.profile-modal-content');
-  if (modalContent) {
-    modalContent.scrollTop = 0;
-  }
+  modal.scrollTop = 0;
 }
 
 // Función para cerrar modal de perfil
 function closeProfileModal() {
-  document.getElementById('profile-modal').style.display = 'none';
+  const modal = document.getElementById('profile-modal');
+  modal.style.display = 'none';
   currentProfileData = null;
+  
+  // Restaurar header y nav
+  const header = document.querySelector('header');
+  const bottomNav = document.querySelector('.bottom-nav');
+  if (header) header.style.display = 'flex';
+  if (bottomNav) bottomNav.style.display = 'flex';
   
   // Restaurar scroll del body
   document.body.style.overflow = 'auto';
