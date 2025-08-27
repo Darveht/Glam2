@@ -664,7 +664,7 @@ function searchAnime() {
   }
 }
 
-// Funciones de búsqueda desde header
+// Funciones de búsqueda desde header (solo para animes)
 function searchFromHeader() {
   const input = document.getElementById("main-search-input").value.toLowerCase().trim();
 
@@ -673,18 +673,24 @@ function searchFromHeader() {
     return;
   }
 
-  const allAnimes = Object.values(animes).flat();
-  const results = allAnimes.filter((anime) =>
-    anime.title.toLowerCase().includes(input) ||
-    anime.description.toLowerCase().includes(input) ||
-    (anime.tags && anime.tags.some(tag => tag.toLowerCase().includes(input)))
-  );
+  // Solo buscar en animes cuando estamos en la sección de inicio
+  const currentSection = document.querySelector('.section.active');
+  if (currentSection && currentSection.id === 'inicio-section') {
+    const allAnimes = Object.values(animes).flat();
+    const results = allAnimes.filter((anime) =>
+      anime.title.toLowerCase().includes(input) ||
+      anime.description.toLowerCase().includes(input) ||
+      (anime.tags && anime.tags.some(tag => tag.toLowerCase().includes(input)))
+    );
 
-  if (results.length > 0) {
-    const anime = results[0];
-    showModal(anime.title, anime.description, anime.year);
+    if (results.length > 0) {
+      const anime = results[0];
+      showModal(anime.title, anime.description, anime.year);
+    } else {
+      alert("Anime no encontrado. Intenta con otros términos.");
+    }
   } else {
-    alert("Anime no encontrado. Intenta con otros términos.");
+    alert("La búsqueda desde el header funciona solo en la sección de Inicio");
   }
 
   // Limpiar el input
@@ -902,23 +908,34 @@ function filterProfiles(event, type) {
   document.getElementById('profiles-search-input').value = '';
 }
 
-// Función para buscar perfiles
+// Función para buscar perfiles (específica para la sección de perfiles)
 function searchProfiles() {
   const input = document.getElementById('profiles-search-input');
+  if (!input) return;
+  
   const query = input.value.toLowerCase().trim();
   const resultsInfo = document.getElementById('profiles-results-info');
 
   if (query === '') {
-    displayProfiles();
-    resultsInfo.innerHTML = '<span>Mostrando todos los usuarios</span>';
+    // Aplicar filtro actual si existe
+    const activeButton = document.querySelector('.filter-btn.active');
+    if (activeButton) {
+      const filterType = activeButton.getAttribute('onclick').match(/'([^']+)'/)[1];
+      applyFilter(filterType, resultsInfo);
+    } else {
+      displayProfiles();
+      resultsInfo.innerHTML = '<span>Mostrando todos los usuarios</span>';
+    }
     return;
   }
 
+  // Buscar solo en perfiles
   const results = profilesData.filter(profile => 
     profile.name.toLowerCase().includes(query) ||
     profile.username.toLowerCase().includes(query) ||
     profile.role.toLowerCase().includes(query) ||
-    profile.location.toLowerCase().includes(query)
+    profile.location.toLowerCase().includes(query) ||
+    profile.bio.toLowerCase().includes(query)
   );
 
   displayProfiles(results);
@@ -930,7 +947,31 @@ function searchProfiles() {
   }
 }
 
-// Función para abrir modal de perfil
+// Función auxiliar para aplicar filtros
+function applyFilter(type, resultsInfo) {
+  let filteredProfiles = profilesData;
+  let filterLabel = 'todos los usuarios';
+
+  switch(type) {
+    case 'admins':
+      filteredProfiles = profilesData.filter(p => p.isAdmin);
+      filterLabel = 'administradores';
+      break;
+    case 'users':
+      filteredProfiles = profilesData.filter(p => !p.isAdmin);
+      filterLabel = 'usuarios';
+      break;
+    case 'verified':
+      filteredProfiles = profilesData.filter(p => p.isVerified);
+      filterLabel = 'usuarios verificados';
+      break;
+  }
+
+  displayProfiles(filteredProfiles);
+  resultsInfo.innerHTML = `<span>Mostrando ${filteredProfiles.length} ${filterLabel}</span>`;
+}
+
+// Función para abrir modal de perfil con pantalla completa
 function openProfileModal(profile) {
   currentProfileData = profile;
 
@@ -959,11 +1000,24 @@ function openProfileModal(profile) {
   const activityContainer = document.getElementById('modal-profile-activity');
   activityContainer.innerHTML = generateRecentActivity(profile);
 
-  // Mostrar modal
-  document.getElementById('profile-modal').style.display = 'block';
+  // Mostrar modal en pantalla completa
+  const modal = document.getElementById('profile-modal');
+  modal.style.display = 'block';
+  modal.style.position = 'fixed';
+  modal.style.top = '0';
+  modal.style.left = '0';
+  modal.style.width = '100vw';
+  modal.style.height = '100vh';
+  modal.style.zIndex = '2000';
   
   // Prevenir scroll del body
   document.body.style.overflow = 'hidden';
+  
+  // Scroll al top del modal
+  const modalContent = document.querySelector('.profile-modal-content');
+  if (modalContent) {
+    modalContent.scrollTop = 0;
+  }
 }
 
 // Función para cerrar modal de perfil
